@@ -42,7 +42,7 @@ export default function ProjectDetailPage() {
   const contact = project.contactId ? getContact(project.contactId) : null;
   const lead = project.convertedFromLeadId ? getLead(project.convertedFromLeadId) : null;
 
-  const set = (key: string, val: string | null) => setForm(f => ({ ...f, [key]: val }));
+  const set = (key: string, val: string | boolean | null) => setForm(f => ({ ...f, [key]: val }));
 
   const handleSave = () => {
     updateProject(project.id, {
