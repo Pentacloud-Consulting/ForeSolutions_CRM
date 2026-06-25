@@ -196,5 +196,7 @@ export const PaymentReceived = mongoose.models.PaymentReceived || mongoose.model
 export const ProjectDocument = mongoose.models.ProjectDocument || mongoose.model('ProjectDocument', projectDocumentSchema);
 export const OtherMaterial = mongoose.models.OtherMaterial || mongoose.model('OtherMaterial', otherMaterialSchema);
 export const InteriorMaterial = mongoose.models.InteriorMaterial || mongoose.model('InteriorMaterial', interiorMaterialSchema);
-export const QuotationModel = mongoose.models.Quotation || mongoose.model('Quotation', quotationSchema);
+// Force recompile to pick up schema changes
+if (mongoose.models.Quotation) { delete mongoose.models.Quotation; }
+export const QuotationModel = mongoose.model('Quotation', quotationSchema);
 export const Settings = mongoose.models.Settings || mongoose.model('Settings', settingsSchema);
