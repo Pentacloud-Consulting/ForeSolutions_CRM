@@ -26,6 +26,12 @@ export const DEFAULT_DESCRIPTIONS: Record<string, string> = {
   'Dining Cabinet': 'Made with solid Plywood core finished with laminate. Multiple storage options provided. Hardware fittings: EBCO',
   'Wood Paneling': 'Wood paneling work as per design specifications.',
   'POP': 'POP (Plaster of Paris) false ceiling and cornice work as per design.',
+  'Bed - With Storage': 'Bed frame with built-in storage made of solid Plywood finished with laminate. Hardware fittings: EBCO',
+  'Bed - Without Storage': 'Bed frame without storage made of solid Plywood finished with laminate.',
+  'Bed - Side Drawer 1': 'Side table/drawer unit made of solid Plywood finished with laminate. Hardware fittings: EBCO',
+  'Bed - Side Drawer 2': 'Side table/drawer unit made of solid Plywood finished with laminate. Hardware fittings: EBCO',
+  'Study': 'Study table unit made of solid Plywood finished with laminate. Hardware fittings: EBCO',
+  'Sitting': 'Sitting area unit/bench made of solid Plywood finished with laminate.',
 };
 
 function formatINR(val: number): string {

@@ -15,6 +15,9 @@ const FLOORS = ['Ground Floor', '1st Floor', '2nd Floor', '3rd Floor', '4th Floo
 const PREDEFINED_SUB_CATEGORIES: Record<string, string[]> = {
   'Kitchen': ['Below Counter', 'Over Head', 'Kitchen Loft', 'Tandem Box'],
   'Wardrobes': ['Wardrobe', 'Wardrobe Loft'],
+  'Bed Room 1': ['Wardrobe', 'Wardrobe Loft', 'Dressing Table', 'Bed - With Storage', 'Bed - Without Storage', 'Bed - Side Drawer 1', 'Bed - Side Drawer 2', 'Study', 'Sitting'],
+  'Bed Room 2': ['Wardrobe', 'Wardrobe Loft', 'Dressing Table', 'Bed - With Storage', 'Bed - Without Storage', 'Bed - Side Drawer 1', 'Bed - Side Drawer 2', 'Study', 'Sitting'],
+  'Bed Room 3': ['Wardrobe', 'Wardrobe Loft', 'Dressing Table', 'Bed - With Storage', 'Bed - Without Storage', 'Bed - Side Drawer 1', 'Bed - Side Drawer 2', 'Study', 'Sitting'],
 };
 
 export default function InteriorMaterialsTab({ projectId }: { projectId: string }) {
