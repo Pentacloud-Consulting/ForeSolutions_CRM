@@ -88,6 +88,9 @@ const QuotationPrintLayout = React.forwardRef<HTMLDivElement, Props>(
           .q-pay-table td { padding: 6px 10px; border: 1px solid #ddd; font-size: 12px; }
           .q-pay-table tr:last-child td { background: #1a2332; color: #C9A84C; font-weight: 800; }
           .q-note { margin-top: 20px; padding: 10px 14px; background: #fef9e7; border: 1px solid #f0d77b; border-radius: 4px; font-size: 11.5px; color: #665a1e; }
+          @media screen {
+            .q-footer-fixed { display: none; }
+          }
           @media print { 
             @page { margin: 0; size: A4; } 
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
