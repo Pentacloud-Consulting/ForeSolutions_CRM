@@ -9,18 +9,18 @@ import { QuotationLineItem } from '@/lib/types';
 import { useReactToPrint } from 'react-to-print';
 import QuotationPrintLayout, { DEFAULT_DESCRIPTIONS } from './QuotationPrintLayout';
 
-const CATEGORIES = ['Kitchen', 'Wardrobes', 'Dressing Table', 'Dining Cabinet', 'TV Unit', 'Wood Paneling', 'Shoe Rack', 'POP'];
+const CATEGORIES = ['Kitchen', 'Wardrobes', 'Bed Room 1', 'Bed Room 2', 'Bed Room 3', 'Dressing Table', 'Dining Cabinet', 'TV Unit', 'Wood Paneling', 'Shoe Rack', 'POP', 'Storage', 'Wash Basin', 'Bathroom Vanity', 'Foyer'];
 const FLOORS = ['Ground Floor', '1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor'];
 
 const PREDEFINED_SUB_CATEGORIES: Record<string, string[]> = {
-  'Kitchen': ['Below Counter', 'Above Counter', 'Kitchen Loft', 'Tandem Box'],
+  'Kitchen': ['Below Counter', 'Over Head', 'Kitchen Loft', 'Tandem Box'],
   'Wardrobes': ['Wardrobe', 'Wardrobe Loft'],
 };
 
 export default function InteriorMaterialsTab({ projectId }: { projectId: string }) {
   const { getProjectQuotations, deleteQuotation, getProject, getAccount } = useData();
   const quotations = getProjectQuotations(projectId);
-  
+
   const project = getProject(projectId);
   const account = project?.accountId ? getAccount(project.accountId) : null;
 
@@ -67,21 +67,21 @@ export default function InteriorMaterialsTab({ projectId }: { projectId: string 
                     <td className="font-bold" style={{ color: '#C9A84C' }}>{formatCurrency(q.grandTotal)}</td>
                     <td>
                       <div className="flex items-center gap-2">
-                        <button 
+                        <button
                           onClick={() => {
                             setEditingQuotation(q);
                             setShowBuilder(true);
-                          }} 
+                          }}
                           className="px-3 py-1.5 rounded bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-semibold flex items-center gap-1.5"
                           title="Edit"
                         >
                           <Pencil className="w-3.5 h-3.5" /> Edit
                         </button>
-                        <button 
+                        <button
                           onClick={() => {
                             setSelectedQuoteForPrint(q);
                             setTimeout(() => handlePrint(), 100);
-                          }} 
+                          }}
                           className="px-3 py-1.5 rounded bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs font-semibold flex items-center gap-1.5"
                         >
                           <Printer className="w-3.5 h-3.5" /> Print PDF
@@ -101,12 +101,12 @@ export default function InteriorMaterialsTab({ projectId }: { projectId: string 
 
       {/* Quotation Builder Modal */}
       {showBuilder && (
-        <QuotationBuilder 
-          projectId={projectId} 
+        <QuotationBuilder
+          projectId={projectId}
           project={project}
           account={account}
           initialQuotation={editingQuotation}
-          onClose={() => setShowBuilder(false)} 
+          onClose={() => setShowBuilder(false)}
         />
       )}
 
@@ -139,7 +139,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
 
   const clientName = account?.clientName || project?.projectName || 'Client';
   const nextNumber = `QT-${String((data.quotations?.length || 0) + 1).padStart(4, '0')}`;
-  
+
   const [quoteMeta, setQuoteMeta] = useState({
     quotationNumber: initialQuotation?.quotationNumber || nextNumber,
     quotationDate: initialQuotation?.quotationDate || new Date().toISOString().split('T')[0],
@@ -152,7 +152,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
       alert("Please add at least one item.");
       return;
     }
-    
+
     // Save to DB
     const payload = {
       projectId,
@@ -173,7 +173,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
 
     // Print
     handlePrint();
-    
+
     // Close builder
     onClose();
   };
@@ -182,7 +182,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
     <ModalPortal>
       <div className="modal-overlay p-4 sm:p-6" onClick={onClose}>
         <div className="modal-content w-full max-w-7xl h-[95vh] flex flex-col" onClick={e => e.stopPropagation()}>
-          
+
           <div className="flex items-center justify-between mb-4 flex-shrink-0">
             <div>
               <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Quotation Builder</h2>
@@ -192,7 +192,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
           </div>
 
           <div className="flex-1 overflow-y-auto pr-2 space-y-6">
-            
+
             {/* Meta Details */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-5 rounded-xl border border-gray-200">
               <div>
@@ -243,11 +243,11 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
                         <td className="font-bold text-gray-900">{formatCurrency(it.totalAmount)}</td>
                         <td>
                           <div className="flex items-center gap-1">
-                            <button 
+                            <button
                               onClick={() => {
                                 setEditingItemIndex(idx);
                                 setShowItemForm(true);
-                              }} 
+                              }}
                               className="p-1.5 rounded hover:bg-gray-100 text-gray-500"
                               title="Edit Item"
                             >
@@ -268,7 +268,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
             {/* Add/Edit Item Form */}
             {showItemForm ? (
               <div className="bg-yellow-50/30 p-5 md:p-6 rounded-xl border border-yellow-200 shadow-sm">
-                <ItemForm 
+                <ItemForm
                   key={editingItemIndex ?? 'new'}
                   initialItem={editingItemIndex !== null ? items[editingItemIndex] : undefined}
                   onSave={(item) => {
@@ -289,8 +289,8 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
                 />
               </div>
             ) : (
-              <button 
-                onClick={() => { setEditingItemIndex(null); setShowItemForm(true); }} 
+              <button
+                onClick={() => { setEditingItemIndex(null); setShowItemForm(true); }}
                 className="w-full py-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-gray-400 hover:text-gray-700 font-medium transition-colors flex items-center justify-center gap-2"
               >
                 <Plus className="w-4 h-4" /> Add Line Item to Quotation
@@ -305,7 +305,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-              <button 
+              <button
                 onClick={handleSaveAndPrint}
                 disabled={items.length === 0}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold text-white transition-all ${items.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'hover:opacity-90'}`}
@@ -342,6 +342,7 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
     category: initialItem?.category || CATEGORIES[0],
     subCategory: initialItem?.subCategory || '',
     measurement: initialItem?.measurement || '',
+    area: initialItem ? String(initialItem.area) : '',
     costPerSqft: initialItem ? String(initialItem.costPerSqft) : '',
     notes: initialItem?.notes || '',
   });
@@ -367,28 +368,24 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
 
   const subCategoryOptions = PREDEFINED_SUB_CATEGORIES[form.category] || null;
 
-  const parsedArea = useMemo(() => {
-    if (!form.measurement) return 0;
-    const parts = form.measurement.toLowerCase().split('x');
+  const handleMeasurementChange = (val: string) => {
+    set('measurement', val);
+    const parts = val.toLowerCase().split('x');
     if (parts.length === 2) {
       const w = parseFloat(parts[0]);
       const h = parseFloat(parts[1]);
-      if (!isNaN(w) && !isNaN(h)) return w * h;
+      if (!isNaN(w) && !isNaN(h)) {
+        set('area', String(w * h));
+      }
     }
-    return 0;
-  }, [form.measurement]);
+  };
 
-  const isMeasurementValid = useMemo(() => {
-    if (!form.measurement) return true;
-    const parts = form.measurement.toLowerCase().split('x');
-    return parts.length === 2 && !isNaN(parseFloat(parts[0])) && !isNaN(parseFloat(parts[1]));
-  }, [form.measurement]);
-
+  const parsedArea = Number(form.area) || 0;
   const totalAmount = parsedArea * (Number(form.costPerSqft) || 0);
 
   const handleSubmit = () => {
-    if (!isMeasurementValid || !form.measurement || !form.costPerSqft) {
-      alert("Please fill in valid measurement and cost.");
+    if (parsedArea <= 0 || !form.costPerSqft) {
+      alert("Please enter a valid Area and Cost.");
       return;
     }
     onSave({
@@ -429,18 +426,23 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
         </div>
 
         <div>
-          <label className="block text-xs font-semibold mb-1 text-gray-700">Measurement (W x H) *</label>
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              className={`crm-input bg-white flex-1 ${!isMeasurementValid && form.measurement ? 'border-red-500' : ''}`}
-              value={form.measurement} onChange={e => set('measurement', e.target.value)}
-              placeholder="e.g. 6.8x7"
-            />
-            <div className="bg-white px-3 py-2 rounded-lg text-sm whitespace-nowrap min-w-[80px] text-center border font-medium text-gray-700">
-              {parsedArea > 0 ? `${parsedArea.toFixed(2)} Sq.ft` : '0 Sq.ft'}
-            </div>
-          </div>
+          <label className="block text-xs font-semibold mb-1 text-gray-700">Measurement (W x H)</label>
+          <input
+            type="text"
+            className="crm-input bg-white"
+            value={form.measurement} onChange={e => handleMeasurementChange(e.target.value)}
+            placeholder="e.g. 6.8x7"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold mb-1 text-gray-700">Area (Sq.ft) *</label>
+          <input
+            type="number" step="0.01"
+            className="crm-input bg-white"
+            value={form.area} onChange={e => set('area', e.target.value)}
+            placeholder="e.g. 47.6"
+          />
         </div>
 
         <div>

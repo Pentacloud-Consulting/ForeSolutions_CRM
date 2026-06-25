@@ -15,7 +15,7 @@ interface Props {
 
 export const DEFAULT_DESCRIPTIONS: Record<string, string> = {
   'Below Counter': 'Made of BWP Plywood provided with ample space for storage. Color options available for the ACRYLIC used outside, inside linear fabric laminate. Hardware fittings: EBCO',
-  'Above Counter': 'Made of BWP Plywood provided with ample space for storage. Color options available for the ACRYLIC used, linear fabric laminate inside. Hardware fittings: EBCO',
+  'Over Head': 'Made of BWP Plywood provided with ample space for storage. Color options available for the ACRYLIC used, linear fabric laminate inside. Hardware fittings: EBCO',
   'Kitchen Loft': 'Made of BWP Plywood provided with ample space for storage. Color options available for the ACRYLIC used, linear fabric laminate inside. Hardware fittings: EBCO',
   'Tandem Box': 'Tandem boxes included in kitchen accessories.',
   'Wardrobe': 'Wardrobe made with solid Plywood core finished with laminate. Multiple storage options provided. Color options available. Easy to maintain plywood laminate. Hardware fittings: EBCO',
@@ -55,13 +55,14 @@ const QuotationPrintLayout = React.forwardRef<HTMLDivElement, Props>(
     return (
       <div ref={ref} className="quotation-print-root">
         <style>{`
-          .quotation-print-root { font-family: 'Times New Roman', Times, serif; color: #000; background: #fff; padding: 40px 50px; max-width: 210mm; margin: 0 auto; font-size: 13px; line-height: 1.5; }
+          .quotation-print-root { font-family: 'Times New Roman', Times, serif; color: #000; background: #fff; padding: 20px 50px; max-width: 210mm; margin: 0 auto; font-size: 13px; line-height: 1.5; }
           .quotation-print-root * { box-sizing: border-box; }
-          .q-header { text-align: center; border-bottom: 3px double #1a2332; padding-bottom: 16px; margin-bottom: 20px; }
-          .q-header h1 { font-size: 26px; font-weight: 800; color: #1a2332; letter-spacing: 2px; margin: 0 0 2px 0; }
-          .q-header .q-tagline { font-size: 11px; color: #666; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 8px 0; }
-          .q-header .q-address { font-size: 11px; color: #444; margin: 0; }
-          .q-header .q-phones { font-size: 12px; font-weight: bold; color: #1a2332; margin: 4px 0 0 0; }
+          .q-wrapper-table { width: 100%; border-collapse: collapse; }
+          .q-wrapper-table > thead td, .q-wrapper-table > tfoot td { padding: 0; }
+          .q-header { border-bottom: 4px solid #000; padding-bottom: 15px; margin-bottom: 10px; }
+          .q-header img { width: 100%; height: auto; display: block; }
+          .q-footer-fixed { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; border-top: 1px solid #ddd; padding: 12px 0; background: #fff; color: #000; font-weight: bold; font-size: 13px; line-height: 1.4; z-index: 100; }
+          .q-footer-spacer { height: 60px; }
           .q-meta { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 12.5px; }
           .q-meta-left div, .q-meta-right div { margin-bottom: 3px; }
           .q-meta-label { font-weight: bold; color: #1a2332; }
@@ -81,96 +82,126 @@ const QuotationPrintLayout = React.forwardRef<HTMLDivElement, Props>(
           .q-pay-table td { padding: 6px 10px; border: 1px solid #ddd; font-size: 12px; }
           .q-pay-table tr:last-child td { background: #1a2332; color: #C9A84C; font-weight: 800; }
           .q-note { margin-top: 20px; padding: 10px 14px; background: #fef9e7; border: 1px solid #f0d77b; border-radius: 4px; font-size: 11.5px; color: #665a1e; }
-          .q-footer { margin-top: 40px; text-align: center; font-size: 11px; color: #999; border-top: 1px solid #ddd; padding-top: 12px; }
-          @media print { .quotation-print-root { padding: 20px 30px; } @page { margin: 10mm; size: A4; } }
+          @media print { 
+            @page { margin: 0; size: A4; } 
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .quotation-print-root { padding: 10mm 15mm; max-width: none; }
+            .q-footer-fixed { bottom: 10mm; left: 15mm; right: 15mm; }
+          }
         `}</style>
 
-        <div className="q-header">
-          <h1>Pentahouse Constructions</h1>
-          <p className="q-tagline">Since 2000</p>
-          <p className="q-address">Jagan Arcade, 4th Floor, 1st Main Road, Post, Anandnagar, RT Nagar, Bengaluru, Karnataka 560032</p>
-          <p className="q-phones">AYUB KHAN — 9945116608 &nbsp;&nbsp;|&nbsp;&nbsp; SHAHID KHAN — 74111 46608</p>
+        {/* Fixed Footer */}
+        <div className="q-footer-fixed">
+          Jagan Arcade, 4th Floor, 1st main Road, Post, Anandanagar,<br />
+          RT Nagar, Bengaluru, Karnataka 560032
         </div>
 
-        <div className="q-meta">
-          <div className="q-meta-left">
-            <div><span className="q-meta-label">Client:</span> {clientName}</div>
-            <div><span className="q-meta-label">Project:</span> {projectName}</div>
-            <div><span className="q-meta-label">Location:</span> {projectLocation}</div>
-          </div>
-          <div className="q-meta-right" style={{ textAlign: 'right' }}>
-            <div><span className="q-meta-label">Quote No:</span> {quotationNumber}</div>
-            <div><span className="q-meta-label">Date:</span> {formattedDate}</div>
-          </div>
-        </div>
-
-        <div className="q-intro">
-          Dear <strong>{clientName}</strong>, Thank you for giving us an opportunity at Pentahouse Interiors to help you build your dream home. Our best quotation for your requirements is mentioned below.
-        </div>
-
-        <table className="q-table">
+        {/* Wrapper table: thead repeats on every page, tfoot acts as a spacer */}
+        <table className="q-wrapper-table">
           <thead>
             <tr>
-              <th style={{ width: '40px' }}>Sl. No</th>
-              <th>Description</th>
-              <th style={{ width: '120px' }}>Area</th>
-              <th style={{ width: '90px' }}>Cost</th>
-              <th style={{ width: '110px' }}>Total Amount</th>
+              <td>
+                <div className="q-header">
+                  <img src="/uploads/Screenshot 2026-06-25 115332.png" alt="Header" />
+                </div>
+              </td>
             </tr>
           </thead>
+          <tfoot>
+            <tr>
+              <td>
+                <div className="q-footer-spacer"></div>
+              </td>
+            </tr>
+          </tfoot>
           <tbody>
-            {groupedItems.map((group, gi) => (
-              <React.Fragment key={group.groupKey}>
-                <tr className="q-cat-row">
-                  <td>{gi + 1}</td>
-                  <td colSpan={4}>{group.groupKey.toUpperCase()}</td>
-                </tr>
-                {group.subItems.map((item, si) => {
-                  const desc = item.notes || '';
-                  const parts = item.measurement.toLowerCase().split('x');
-                  const w = parts[0]?.trim() || '';
-                  const h = parts[1]?.trim() || '';
-                  const areaDisplay = `[ ${w} x ${h} = ${item.area.toFixed(2)} ] Sqft`;
-                  return (
-                    <tr key={si}>
-                      <td style={{ textAlign: 'center', color: '#888' }}>{String.fromCharCode(97 + si)}.</td>
-                      <td>
-                        <span className="q-sub-title">{item.subCategory || item.category}</span>
-                        {desc && <div className="q-sub-desc">{desc}</div>}
-                      </td>
-                      <td>{areaDisplay}</td>
-                      <td>₹{formatINR(item.costPerSqft)}/-</td>
-                      <td>₹{formatINR(item.totalAmount)}</td>
+            <tr>
+              <td>
+                {/* Main Content */}
+                <div className="q-meta">
+                  <div className="q-meta-left">
+                    <div><span className="q-meta-label">Client:</span> {clientName}</div>
+                    <div><span className="q-meta-label">Project:</span> {projectName}</div>
+                    <div><span className="q-meta-label">Location:</span> {projectLocation}</div>
+                  </div>
+                  <div className="q-meta-right" style={{ textAlign: 'right' }}>
+                    <div><span className="q-meta-label">Date:</span> {formattedDate}</div>
+                  </div>
+                </div>
+
+                <div className="q-intro">
+                  Dear <strong>{clientName}</strong>, Thank you for giving us an opportunity at Pentahouse Interiors to help you build your dream home. Our best quotation for your requirements is mentioned below.
+                </div>
+
+                <table className="q-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '40px' }}>Sl. No</th>
+                      <th>Description</th>
+                      <th style={{ width: '120px' }}>Area</th>
+                      <th style={{ width: '90px' }}>Cost</th>
+                      <th style={{ width: '110px' }}>Total Amount</th>
                     </tr>
-                  );
-                })}
-              </React.Fragment>
-            ))}
-            <tr className="q-total-row">
-              <td colSpan={4} style={{ textAlign: 'right' }}>TOTAL</td>
-              <td>Rs {formatINR(grandTotal)}</td>
+                  </thead>
+                  <tbody>
+                    {groupedItems.map((group, gi) => (
+                      <React.Fragment key={group.groupKey}>
+                        <tr className="q-cat-row">
+                          <td>{gi + 1}</td>
+                          <td colSpan={4}>{group.groupKey.toUpperCase()}</td>
+                        </tr>
+                        {group.subItems.map((item, si) => {
+                          const desc = item.notes || '';
+                          const m = item.measurement || '';
+                          let areaDisplay = `[ x = ${item.area.toFixed(2)} ] Sqft`;
+                          if (m) {
+                            const parts = m.toLowerCase().split('x');
+                            const w = parts[0]?.trim() || '';
+                            const h = parts[1]?.trim() || '';
+                            areaDisplay = `[ ${w} x ${h} = ${item.area.toFixed(2)} ] Sqft`;
+                          }
+                          return (
+                            <tr key={si}>
+                              <td style={{ textAlign: 'center', color: '#888' }}>{String.fromCharCode(97 + si)}.</td>
+                              <td>
+                                <span className="q-sub-title">{item.subCategory || item.category}</span>
+                                {desc && <div className="q-sub-desc">{desc}</div>}
+                              </td>
+                              <td>{areaDisplay}</td>
+                              <td>₹{formatINR(item.costPerSqft)}/-</td>
+                              <td>₹{formatINR(item.totalAmount)}</td>
+                            </tr>
+                          );
+                        })}
+                      </React.Fragment>
+                    ))}
+                    <tr className="q-total-row">
+                      <td colSpan={4} style={{ textAlign: 'right' }}>TOTAL</td>
+                      <td>Rs {formatINR(grandTotal)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div className="q-note">
+                  <strong>Note:</strong> The plywood used comes with a 15-year warranty.
+                </div>
+
+                <div className="q-payment-section">
+                  <h3>Payment Method</h3>
+                  <table className="q-pay-table">
+                    <tbody>
+                      <tr><td>Start with Workorder Sign in the Project</td><td style={{ textAlign: 'right', width: '80px' }}>50%</td></tr>
+                      <tr><td>Once Material Reach to Site on Installation</td><td style={{ textAlign: 'right' }}>20%</td></tr>
+                      <tr><td>Hardware Installation Time</td><td style={{ textAlign: 'right' }}>15%</td></tr>
+                      <tr><td>After Total Completion of the Project Final</td><td style={{ textAlign: 'right' }}>15%</td></tr>
+                      <tr><td>Grand Total Percentage</td><td style={{ textAlign: 'right' }}>100%</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
-
-        <div className="q-note">
-          <strong>Note:</strong> The plywood used comes with a 15-year warranty.
-        </div>
-
-        <div className="q-payment-section">
-          <h3>Payment Method</h3>
-          <table className="q-pay-table">
-            <tbody>
-              <tr><td>Start with Workorder Sign in the Project</td><td style={{ textAlign: 'right', width: '80px' }}>50%</td></tr>
-              <tr><td>Once Material Reach to Site on Installation</td><td style={{ textAlign: 'right' }}>20%</td></tr>
-              <tr><td>Hardware Installation Time</td><td style={{ textAlign: 'right' }}>15%</td></tr>
-              <tr><td>After Total Completion of the Project Final</td><td style={{ textAlign: 'right' }}>15%</td></tr>
-              <tr><td>Grand Total Percentage</td><td style={{ textAlign: 'right' }}>100%</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="q-footer">Pentahouse Constructions — {quotationNumber}</div>
       </div>
     );
   }
