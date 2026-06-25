@@ -417,13 +417,18 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
 
         <div>
           <label className="block text-xs font-semibold mb-1 text-gray-700">Sub-category</label>
-          {subCategoryOptions ? (
-            <select className="crm-input bg-white" value={form.subCategory} onChange={e => handleSubCategoryChange(e.target.value)}>
-              <option value="">Select Sub-category...</option>
-              {subCategoryOptions.map(sc => <option key={sc} value={sc}>{sc}</option>)}
-            </select>
-          ) : (
-            <input type="text" className="crm-input bg-white" value={form.subCategory} onChange={e => set('subCategory', e.target.value)} placeholder="Enter sub-category..." />
+          <input 
+            type="text" 
+            list="sub-category-list"
+            className="crm-input bg-white" 
+            value={form.subCategory} 
+            onChange={e => handleSubCategoryChange(e.target.value)} 
+            placeholder="Select or type custom..." 
+          />
+          {subCategoryOptions && (
+            <datalist id="sub-category-list">
+              {subCategoryOptions.map(sc => <option key={sc} value={sc} />)}
+            </datalist>
           )}
         </div>
 
