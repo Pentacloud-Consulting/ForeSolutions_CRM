@@ -9,7 +9,7 @@ import { QuotationLineItem } from '@/lib/types';
 import { useReactToPrint } from 'react-to-print';
 import QuotationPrintLayout, { DEFAULT_DESCRIPTIONS } from './QuotationPrintLayout';
 
-const CATEGORIES = ['Kitchen', 'Bed Room 1', 'Bed Room 2', 'Bed Room 3', 'Dining Cabinet', 'TV Unit', 'Wood Paneling', 'Shoe Rack', 'POP', 'Storage', 'Wash Basin', 'Bathroom Vanity', 'Foyer'];
+const CATEGORIES = ['Kitchen', 'Bed Room 1', 'Bed Room 2', 'Bed Room 3', 'Dining Cabinet', 'TV Unit', 'Wood Paneling', 'Shoe Rack', 'POP', 'Storage', 'Wash Basin', 'Bathroom Vanity', 'Foyer', 'Dressing'];
 const FLOORS = ['Ground Floor', '1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor'];
 
 const PREDEFINED_SUB_CATEGORIES: Record<string, string[]> = {
