@@ -68,12 +68,13 @@ const QuotationPrintLayout = React.forwardRef<HTMLDivElement, Props>(
           .q-header { border-bottom: 4px solid #000; padding-bottom: 15px; margin-bottom: 10px; }
           .q-header img { width: 100%; height: auto; display: block; }
           .q-footer-fixed { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; border-top: 1px solid #ddd; padding: 12px 0; background: #fff; color: #000; font-weight: bold; font-size: 13px; line-height: 1.4; z-index: 100; }
-          .q-footer-spacer { height: 60px; }
+          .q-footer-spacer { height: 100px; }
           .q-meta { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 12.5px; }
           .q-meta-left div, .q-meta-right div { margin-bottom: 3px; }
           .q-meta-label { font-weight: bold; color: #1a2332; }
           .q-intro { background: #f8f6f0; border-left: 4px solid #C9A84C; padding: 10px 14px; margin-bottom: 20px; font-size: 12px; color: #333; }
           .q-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+          .q-table tr { page-break-inside: avoid; }
           .q-table th { background: #1a2332; color: #C9A84C; text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 10px 8px; text-align: left; border: 1px solid #1a2332; }
           .q-table th:nth-child(3), .q-table th:nth-child(4), .q-table th:nth-child(5) { text-align: right; }
           .q-table td { padding: 8px; border: 1px solid #ddd; vertical-align: top; font-size: 12px; }
