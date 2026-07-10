@@ -30,8 +30,8 @@ export default function DashboardPage() {
 
   // ── Project stats ──
   const activeProjects = data.projects.filter(p => p.isActive !== false).length;
-  const completedProjects = data.projects.filter(p => p.status === 'Completed').length;
-  const onHoldProjects = data.projects.filter(p => p.status === 'On Hold').length;
+  const closedWonDeals = data.projects.filter(p => p.status === 'Closed Won').length;
+  const closedLostDeals = data.projects.filter(p => p.status === 'Closed Lost').length;
 
   // ── Financial aggregates ──
   let totalMaterialCost = 0;
@@ -126,7 +126,7 @@ export default function DashboardPage() {
             <Link href="/crm/projects?filter=Inactive">
               <StatCard icon={PauseCircle} label="Inactive Deals" value={data.projects.length - activeProjects} color="var(--brand-orange)" />
             </Link>
-            <StatCard icon={CheckCircle2} label="Completed" value={completedProjects} color="var(--brand-green)" />
+            <StatCard icon={CheckCircle2} label="Closed Won" value={closedWonDeals} color="var(--brand-green)" />
           </div>
         </section>
       )}
