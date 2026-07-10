@@ -10,13 +10,13 @@ import ModalPortal from '@/components/ui/ModalPortal';
 const paymentModes: PaymentMode[] = ['Cash','UPI','Bank Transfer','Cheque'];
 
 export default function PaymentReceivedTab({ projectId }: { projectId: string }) {
-  const { getProjectPaymentsReceived, addPaymentReceived, deletePaymentReceived, getProject } = useData();
+  const { getProjectPaymentsReceived, addPaymentReceived, deletePaymentReceived, getProjectFinancialSummary } = useData();
   const payments = getProjectPaymentsReceived(projectId);
-  const project = getProject(projectId);
+  const summary = getProjectFinancialSummary(projectId);
   const [showCreate, setShowCreate] = useState(false);
 
   const totalReceived = payments.reduce((s, p) => s + (p.amountReceived || 0), 0);
-  const contractValue = project?.projectContractValue || 0;
+  const contractValue = summary.projectContractValue || 0;
   const outstanding = contractValue - totalReceived;
 
   const categoryTotals: Record<string, number> = {};
