@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   CRMData, Lead, Account, Contact, Project,
-  InteriorMaterial, FinancialSummary, MaterialCategory, Quotation, InventoryProduct, DealInventoryItem, PurchaseOrder
+  InteriorMaterial, FinancialSummary, MaterialCategory, Quotation, InventoryProduct, DealInventoryItem, PurchaseOrder, Material
 } from '@/lib/types';
 import { generateId, generateProjectId, nowISO } from '@/lib/utils';
 
