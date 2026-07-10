@@ -66,7 +66,7 @@ export default function InteriorMaterialsTab({ projectId }: { projectId: string 
                     <td>{formatDate(q.quotationDate)}</td>
                     <td>{q.clientName || '—'}</td>
                     <td>{q.items.length} items</td>
-                    <td className="font-bold" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(q.grandTotal)}</td>
+                    <td className="font-bold" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(q.grandTotalIncVat)}</td>
                     <td>
                       <div className="flex items-center gap-2">
                         <button
@@ -163,7 +163,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
       projectName: project?.projectName || '',
       projectLocation: project?.projectLocation || '',
       items,
-      grandTotal,
+      grandTotalIncVat: grandTotal,
       quotationDate: quoteMeta.quotationDate,
     };
 

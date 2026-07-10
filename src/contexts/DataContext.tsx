@@ -638,7 +638,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     
     // Sum legacy interior materials + new quotations
     const legacyInteriorCost = interiorMats.reduce((s, im) => s + (im.totalAmount || 0), 0);
-    const quotationsCost = projectQuotations.reduce((s, q) => s + (q.grandTotal || 0), 0);
+    const quotationsCost = projectQuotations.reduce((s, q) => s + (q.grandTotalIncVat || 0), 0);
     const totalInteriorMaterialsCost = legacyInteriorCost + quotationsCost;
     
     const totalProjectCost = totalMaterialsCost + totalLabourCost + totalOneTimeExpenses + totalOtherMaterialsCost + totalInteriorMaterialsCost;
