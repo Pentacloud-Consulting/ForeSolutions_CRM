@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useData } from '@/contexts/DataContext';
-import { Project, ProjectType, ProjectStatus } from '@/lib/types';
+import { Project, DealType, ProjectStatus } from '@/lib/types';
 import { formatCurrency, formatDate, getStatusColor } from '@/lib/utils';
 import { Plus, Search, Filter, Eye, Trash2, X } from 'lucide-react';
 import ModalPortal from '@/components/ui/ModalPortal';
 
-const projectTypes: ProjectType[] = ['Residential', 'Commercial', 'Villa', 'Apartment', 'Renovation', 'Construction'];
-const projectStatuses: ProjectStatus[] = ['Planning', 'Foundation', 'Construction', 'Interior', 'Completed', 'On Hold'];
+const dealTypes: DealType[] = ['Hardware', 'Software License', 'Service Contract', 'Blended'];
+const projectStatuses: ProjectStatus[] = ['Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost'];
 
 export default function ProjectsPage() {
   const { data, addProject, deleteProject } = useData();
@@ -29,8 +29,7 @@ export default function ProjectsPage() {
     const s = search.toLowerCase();
     const matchSearch =
       p.projectName.toLowerCase().includes(s) ||
-      p.projectId.toLowerCase().includes(s) ||
-      p.projectLocation.toLowerCase().includes(s);
+      p.projectId.toLowerCase().includes(s);
     const matchStatus = filterStatus === 'All' || p.status === filterStatus;
     const matchActive = filterIsActive === 'All' 
       ? true 
@@ -42,13 +41,13 @@ export default function ProjectsPage() {
     <div className="animate-fade-in">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-3xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>
-            Projects
+          <h2 className="text-3xl font-bold font-display" style={{ color: 'var(--ink)' }}>
+            Deals
           </h2>
-          <p className="text-gray-500 mt-1">{data.projects.length} total projects</p>
+          <p className="text-gray-500 mt-1">{data.projects.length} total deals</p>
         </div>
-        <button className="btn-gold" onClick={() => setShowCreate(true)}>
-          <Plus className="w-4 h-4" /> Add Project
+        <button className="btn-primary" onClick={() => setShowCreate(true)}>
+          <Plus className="w-4 h-4" /> Add Deal
         </button>
       </div>
 
@@ -73,16 +72,16 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
               <tr>
-                <th>Project ID</th>
-                <th>Project Name</th>
+                <th>Deal ID</th>
+                <th>Deal Name</th>
                 <th>Client</th>
                 <th>Type</th>
-                <th>Contract Value</th>
+                <th>Deal Value</th>
                 <th>Status</th>
                 <th>Active</th>
                 <th>Start Date</th>
@@ -91,23 +90,23 @@ export default function ProjectsPage() {
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan={8} className="text-center py-12 text-gray-400">No projects found.</td></tr>
+                <tr><td colSpan={8} className="text-center py-12 text-gray-400">No deals found.</td></tr>
               ) : (
                 filtered.map(project => {
                   const acct = project.accountId ? data.accounts.find(a => a.id === project.accountId) : null;
                   return (
                     <tr key={project.id}>
-                      <td className="font-mono text-xs font-semibold" style={{ color: '#C9A84C' }}>{project.projectId}</td>
-                      <td className="font-medium" style={{ color: '#0F1C2E' }}>{project.projectName}</td>
+                      <td className="font-mono text-xs font-semibold" style={{ color: 'var(--brand-cyan)' }}>{project.projectId}</td>
+                      <td className="font-medium" style={{ color: 'var(--ink)' }}>{project.projectName}</td>
                       <td>
                         {acct ? (
-                          <Link href={`/crm/accounts/${acct.id}`} className="text-sm hover:underline" style={{ color: '#C9A84C' }}>
+                          <Link href={`/crm/accounts/${acct.id}`} className="text-sm hover:underline" style={{ color: 'var(--brand-cyan)' }}>
                             {acct.clientName}
                           </Link>
                         ) : '—'}
                       </td>
-                      <td>{project.projectType}</td>
-                      <td>{formatCurrency(project.projectContractValue)}</td>
+                      <td>{project.dealType}</td>
+                      <td>{formatCurrency(project.dealValue)}</td>
                       <td>
                         <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${getStatusColor(project.status)}`}>
                           {project.status}
@@ -122,7 +121,7 @@ export default function ProjectsPage() {
                       <td>
                         <div className="flex items-center gap-2">
                           <Link href={`/crm/projects/${project.id}`} className="p-1.5 rounded-lg hover:bg-gray-100"><Eye className="w-4 h-4 text-gray-500" /></Link>
-                          <button onClick={() => { if (confirm('Delete project and all child records?')) deleteProject(project.id); }} className="p-1.5 rounded-lg hover:bg-red-50"><Trash2 className="w-4 h-4 text-red-400" /></button>
+                          <button onClick={() => { if (confirm('Delete deal and all child records?')) deleteProject(project.id); }} className="p-1.5 rounded-lg hover:bg-red-50"><Trash2 className="w-4 h-4 text-red-400" /></button>
                         </div>
                       </td>
                     </tr>
@@ -162,15 +161,13 @@ function CreateProjectModal({
     accountId: null as string | null,
     contactId: null as string | null,
     convertedFromLeadId: null as string | null,
-    projectLocation: '',
-    projectType: 'Residential' as ProjectType,
-    totalSiteArea: '',
-    builtUpArea: '',
-    numberOfFloors: '',
+    dealType: 'Hardware' as DealType,
+    contractTermMonths: '',
+    expectedCloseDate: '',
     startDate: '',
     endDate: '',
-    projectContractValue: '',
-    status: 'Planning' as ProjectStatus,
+    dealValue: '',
+    status: 'Prospecting' as ProjectStatus,
   });
   const set = (key: string, val: string | null) => setForm(f => ({ ...f, [key]: val }));
 
@@ -179,7 +176,7 @@ function CreateProjectModal({
       <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content max-w-2xl" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Create Project</h2>
+            <h2 className="text-xl font-bold font-display" style={{ color: 'var(--ink)' }}>Create Deal</h2>
             <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
           </div>
           <form
@@ -188,53 +185,49 @@ function CreateProjectModal({
               onCreate({
                 ...form,
                 isActive: true,
-                totalSiteArea: form.totalSiteArea ? Number(form.totalSiteArea) : null,
-                builtUpArea: form.builtUpArea ? Number(form.builtUpArea) : null,
-                numberOfFloors: form.numberOfFloors ? Number(form.numberOfFloors) : null,
-                projectContractValue: form.projectContractValue ? Number(form.projectContractValue) : null,
+                contractTermMonths: form.contractTermMonths ? Number(form.contractTermMonths) : null,
+                dealValue: form.dealValue ? Number(form.dealValue) : null,
               });
             }}
             className="space-y-4"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Project Name *</label><input className="crm-input" value={form.projectName} onChange={e => set('projectName', e.target.value)} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Deal Name *</label><input className="crm-input" value={form.projectName} onChange={e => set('projectName', e.target.value)} required /></div>
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Project Type</label>
-                <select className="crm-select" value={form.projectType} onChange={e => set('projectType', e.target.value)}>
-                  {projectTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Deal Type</label>
+                <select className="crm-select" value={form.dealType} onChange={e => set('dealType', e.target.value)}>
+                  {dealTypes.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Account</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Account</label>
                 <select className="crm-select" value={form.accountId || ''} onChange={e => set('accountId', e.target.value || null)}>
                   <option value="">— None —</option>
                   {accounts.map(a => <option key={a.id} value={a.id}>{a.clientName}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Contact</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Contact</label>
                 <select className="crm-select" value={form.contactId || ''} onChange={e => set('contactId', e.target.value || null)}>
                   <option value="">— None —</option>
                   {contacts.map(c => <option key={c.id} value={c.id}>{c.contactName}</option>)}
                 </select>
               </div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Total Site Area (sq.ft)</label><input type="number" className="crm-input" value={form.totalSiteArea} onChange={e => set('totalSiteArea', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Built Up Area (sq.ft)</label><input type="number" className="crm-input" value={form.builtUpArea} onChange={e => set('builtUpArea', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Number of Floors</label><input type="number" className="crm-input" value={form.numberOfFloors} onChange={e => set('numberOfFloors', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Contract Value (₹)</label><input type="number" className="crm-input" value={form.projectContractValue} onChange={e => set('projectContractValue', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Start Date</label><input type="date" className="crm-input" value={form.startDate} onChange={e => set('startDate', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>End Date</label><input type="date" className="crm-input" value={form.endDate} onChange={e => set('endDate', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Expected Close Date</label><input type="date" className="crm-input" value={form.expectedCloseDate} onChange={e => set('expectedCloseDate', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Contract Term (Months)</label><input type="number" className="crm-input" value={form.contractTermMonths} onChange={e => set('contractTermMonths', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Deal Value (₹)</label><input type="number" className="crm-input" value={form.dealValue} onChange={e => set('dealValue', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Start Date</label><input type="date" className="crm-input" value={form.startDate} onChange={e => set('startDate', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>End Date</label><input type="date" className="crm-input" value={form.endDate} onChange={e => set('endDate', e.target.value)} /></div>
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Status</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Status</label>
                 <select className="crm-select" value={form.status} onChange={e => set('status', e.target.value)}>
                   {projectStatuses.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
             </div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Project Location</label><textarea className="crm-textarea" value={form.projectLocation} onChange={e => set('projectLocation', e.target.value)} rows={2} /></div>
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-              <button type="submit" className="btn-gold">Create Project</button>
+              <button type="submit" className="btn-primary">Create Deal</button>
             </div>
           </form>
         </div>

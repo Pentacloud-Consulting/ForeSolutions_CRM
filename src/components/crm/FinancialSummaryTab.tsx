@@ -12,7 +12,7 @@ export default function FinancialSummaryTab({ projectId }: { projectId: string }
   const summary = getProjectFinancialSummary(projectId);
 
   const rows = [
-    { label: 'Project Contract Value', value: summary.projectContractValue, icon: FileText, color: '#0F1C2E' },
+    { label: 'Project Contract Value', value: summary.projectContractValue, icon: FileText, color: 'var(--ink)' },
     { label: 'Total Materials Cost', value: summary.totalMaterialsCost, icon: Hammer, color: '#2563EB' },
     { label: 'Total Labour Cost', value: summary.totalLabourCost, icon: CreditCard, color: '#7C3AED' },
     { label: 'Total One-Time Expenses', value: summary.totalOneTimeExpenses, icon: DollarSign, color: '#EA580C' },
@@ -31,10 +31,10 @@ export default function FinancialSummaryTab({ projectId }: { projectId: string }
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold" style={{ color: '#0F1C2E' }}>Financial Summary</h3>
+      <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Financial Summary</h3>
 
       {/* Main financial metrics */}
-      <div className="bg-white rounded-xl p-6 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl p-6" style={{ border: '1px solid var(--border)' }}>
         <div className="space-y-0">
           {rows.map((row, i) => {
             const Icon = row.icon;
@@ -43,7 +43,7 @@ export default function FinancialSummaryTab({ projectId }: { projectId: string }
               <div
                 key={row.label}
                 className={`flex items-center justify-between py-4 ${i < rows.length - 1 ? 'border-b' : ''}`}
-                style={{ borderColor: isBold ? '#C9A84C' : '#F1F5F9' }}
+                style={{ borderColor: isBold ? 'var(--brand-cyan)' : '#F1F5F9' }}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -54,7 +54,7 @@ export default function FinancialSummaryTab({ projectId }: { projectId: string }
                   </div>
                   <span
                     className={`text-sm ${isBold ? 'font-bold text-base' : 'font-medium'}`}
-                    style={{ color: '#0F1C2E' }}
+                    style={{ color: 'var(--ink)' }}
                   >
                     {row.label}
                   </span>
@@ -73,8 +73,8 @@ export default function FinancialSummaryTab({ projectId }: { projectId: string }
 
       {/* Category-wise material breakdown */}
       {Object.keys(summary.materialsByCategory).length > 0 && (
-        <div className="bg-white rounded-xl p-6 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
-          <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: '#C9A84C' }}>
+        <div className="bg-surface rounded-xl p-6" style={{ border: '1px solid var(--border)' }}>
+          <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>
             Material Cost Breakdown
           </h4>
           <div className="space-y-3">
@@ -86,21 +86,21 @@ export default function FinancialSummaryTab({ projectId }: { projectId: string }
                 <div key={cat}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm text-gray-600">{cat}</span>
-                    <span className="text-sm font-semibold" style={{ color: '#0F1C2E' }}>{formatCurrency(val)}</span>
+                    <span className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{formatCurrency(val)}</span>
                   </div>
                   <div className="w-full h-2 rounded-full" style={{ background: '#F1F5F9' }}>
                     <div
                       className="h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #C9A84C, #D4B966)' }}
+                      style={{ width: `${pct}%`, background: 'linear-gradient(90deg, var(--brand-cyan), #D4B966)' }}
                     />
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="mt-4 pt-3 flex justify-between" style={{ borderTop: '2px solid #C9A84C' }}>
-            <span className="text-sm font-bold" style={{ color: '#0F1C2E' }}>Total Materials</span>
-            <span className="text-sm font-bold" style={{ color: '#C9A84C' }}>{formatCurrency(summary.totalMaterialsCost)}</span>
+          <div className="mt-4 pt-3 flex justify-between" style={{ borderTop: '2px solid var(--brand-cyan)' }}>
+            <span className="text-sm font-bold" style={{ color: 'var(--ink)' }}>Total Materials</span>
+            <span className="text-sm font-bold" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(summary.totalMaterialsCost)}</span>
           </div>
         </div>
       )}

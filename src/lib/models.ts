@@ -183,7 +183,54 @@ const settingsSchema = new mongoose.Schema({
   value: { type: mongoose.Schema.Types.Mixed, required: true }
 }, { timestamps: true });
 
+const inventoryProductSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  productName: { type: String, required: true },
+  category: { type: String, default: 'Hardware' },
+  billingType: { type: String, default: 'One-Off' },
+  unitPrice: { type: Number, default: 0 },
+  stockQuantity: { type: Number, default: 0 },
+  description: { type: String, default: '' },
+}, { timestamps: true, toJSON: transformOptions, toObject: transformOptions });
 
+const dealInventoryItemSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  projectId: { type: String, required: true },
+  productId: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  totalAmount: { type: Number, required: true },
+  notes: { type: String, default: '' },
+  addedAt: { type: String, required: true },
+}, { timestamps: true, toJSON: transformOptions, toObject: transformOptions });
+
+const poLineItemSchema = new mongoose.Schema({
+  id: { type: String, required: true },
+  itemDescription: { type: String, required: true },
+  stockType: { type: String, default: 'Sale' },
+  qty: { type: Number, required: true },
+  rate: { type: Number, required: true },
+  vatPercent: { type: Number, required: true },
+  vatAmount: { type: Number, required: true },
+  amount: { type: Number, required: true },
+}, { _id: false });
+
+const purchaseOrderSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  projectId: { type: String, required: true },
+  poNumber: { type: String, required: true },
+  vendorName: { type: String, default: '' },
+  vendorAddress: { type: String, default: '' },
+  deliverTo: { type: String, default: '' },
+  poDate: { type: String, required: true },
+  terms: { type: String, default: '' },
+  reference: { type: String, default: '' },
+  deliveryCost: { type: Number, default: 0 },
+  items: [poLineItemSchema],
+  subTotal: { type: Number, default: 0 },
+  totalVat: { type: Number, default: 0 },
+  grandTotal: { type: Number, default: 0 },
+  createdAt: { type: String, required: true },
+}, { timestamps: true, toJSON: transformOptions, toObject: transformOptions });
 // Prevent OverwriteModelError
 export const Lead = mongoose.models.Lead || mongoose.model('Lead', leadSchema);
 export const Account = mongoose.models.Account || mongoose.model('Account', accountSchema);
@@ -200,3 +247,6 @@ export const InteriorMaterial = mongoose.models.InteriorMaterial || mongoose.mod
 if (mongoose.models.Quotation) { delete mongoose.models.Quotation; }
 export const QuotationModel = mongoose.model('Quotation', quotationSchema);
 export const Settings = mongoose.models.Settings || mongoose.model('Settings', settingsSchema);
+export const InventoryProduct = mongoose.models.InventoryProduct || mongoose.model('InventoryProduct', inventoryProductSchema);
+export const DealInventoryItem = mongoose.models.DealInventoryItem || mongoose.model('DealInventoryItem', dealInventoryItemSchema);
+export const PurchaseOrder = mongoose.models.PurchaseOrder || mongoose.model('PurchaseOrder', purchaseOrderSchema);

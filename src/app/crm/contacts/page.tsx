@@ -26,12 +26,12 @@ export default function ContactsPage() {
     <div className="animate-fade-in">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-3xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>
+          <h2 className="text-3xl font-bold font-display" style={{ color: 'var(--ink)' }}>
             Contacts
           </h2>
           <p className="text-gray-500 mt-1">{data.contacts.length} total contacts</p>
         </div>
-        <button className="btn-gold" onClick={() => setShowCreate(true)}>
+        <button className="btn-primary" onClick={() => setShowCreate(true)}>
           <Plus className="w-4 h-4" /> Add Contact
         </button>
       </div>
@@ -46,7 +46,7 @@ export default function ContactsPage() {
         />
       </div>
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
@@ -72,13 +72,13 @@ export default function ContactsPage() {
                     : null;
                   return (
                     <tr key={contact.id}>
-                      <td className="font-medium" style={{ color: '#0F1C2E' }}>{contact.contactName}</td>
+                      <td className="font-medium" style={{ color: 'var(--ink)' }}>{contact.contactName}</td>
                       <td>{contact.mobile}</td>
                       <td className="text-gray-500">{truncate(contact.email, 25)}</td>
                       <td>{contact.designation || '—'}</td>
                       <td>
                         {acct ? (
-                          <Link href={`/crm/accounts/${acct.id}`} className="text-sm hover:underline" style={{ color: '#C9A84C' }}>
+                          <Link href={`/crm/accounts/${acct.id}`} className="text-sm hover:underline" style={{ color: 'var(--brand-cyan)' }}>
                             {acct.clientName}
                           </Link>
                         ) : '—'}
@@ -138,27 +138,27 @@ function CreateContactModal({
       <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content max-w-xl" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Create Contact</h2>
+            <h2 className="text-xl font-bold font-display" style={{ color: 'var(--ink)' }}>Create Contact</h2>
             <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
           </div>
           <form onSubmit={e => { e.preventDefault(); onCreate(form); }} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Contact Name *</label><input className="crm-input" value={form.contactName} onChange={e => set('contactName', e.target.value)} required /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Mobile *</label><input className="crm-input" value={form.mobile} onChange={e => set('mobile', e.target.value)} required /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Email</label><input type="email" className="crm-input" value={form.email} onChange={e => set('email', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Designation</label><input className="crm-input" value={form.designation} onChange={e => set('designation', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Contact Name *</label><input className="crm-input" value={form.contactName} onChange={e => set('contactName', e.target.value)} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Mobile *</label><input className="crm-input" value={form.mobile} onChange={e => set('mobile', e.target.value)} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Email</label><input type="email" className="crm-input" value={form.email} onChange={e => set('email', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Designation</label><input className="crm-input" value={form.designation} onChange={e => set('designation', e.target.value)} /></div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Linked Account</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Linked Account</label>
                 <select className="crm-select" value={form.linkedAccountId || ''} onChange={e => set('linkedAccountId', e.target.value || null)}>
                   <option value="">— None —</option>
                   {accounts.map(a => <option key={a.id} value={a.id}>{a.clientName}</option>)}
                 </select>
               </div>
             </div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Address</label><textarea className="crm-textarea" value={form.address} onChange={e => set('address', e.target.value)} rows={2} /></div>
+            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Address</label><textarea className="crm-textarea" value={form.address} onChange={e => set('address', e.target.value)} rows={2} /></div>
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-              <button type="submit" className="btn-gold">Create Contact</button>
+              <button type="submit" className="btn-primary">Create Contact</button>
             </div>
           </form>
         </div>

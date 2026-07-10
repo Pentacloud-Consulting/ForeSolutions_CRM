@@ -6,10 +6,10 @@
  * Format a number as Indian Rupee currency
  */
 export function formatCurrency(value: number | null | undefined): string {
-  if (value == null || isNaN(value)) return '₹0.00';
-  return new Intl.NumberFormat('en-IN', {
+  if (value == null || isNaN(value)) return '£0.00';
+  return new Intl.NumberFormat('en-GB', {
     style: 'currency',
-    currency: 'INR',
+    currency: 'GBP',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
@@ -29,7 +29,7 @@ export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return '—';
   try {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('en-IN', {
+    return d.toLocaleDateString('en-GB', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -67,21 +67,21 @@ export function truncate(str: string, max = 40): string {
 export function getStatusColor(status: string): string {
   const map: Record<string, string> = {
     // Lead statuses
-    New: 'bg-blue-100 text-blue-800',
-    Contacted: 'bg-indigo-100 text-indigo-800',
-    'Follow Up': 'bg-yellow-100 text-yellow-800',
-    'Site Visit Scheduled': 'bg-purple-100 text-purple-800',
-    'Proposal Sent': 'bg-orange-100 text-orange-800',
-    Qualified: 'bg-green-100 text-green-800',
-    Lost: 'bg-red-100 text-red-800',
-    Converted: 'bg-emerald-100 text-emerald-800',
+    New: 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20',
+    Contacted: 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20',
+    'Follow Up': 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20',
+    'Site Visit Scheduled': 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20',
+    'Proposal Sent': 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20',
+    Qualified: 'bg-brand-green/10 text-brand-green border border-brand-green/20',
+    Lost: 'bg-brand-pink/10 text-brand-pink border border-brand-pink/20',
+    Converted: 'bg-brand-green/10 text-brand-green border border-brand-green/20',
     // Project statuses
-    Planning: 'bg-blue-100 text-blue-800',
-    Foundation: 'bg-amber-100 text-amber-800',
-    Construction: 'bg-orange-100 text-orange-800',
-    Interior: 'bg-violet-100 text-violet-800',
-    Completed: 'bg-green-100 text-green-800',
-    'On Hold': 'bg-gray-100 text-gray-800',
+    Planning: 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20',
+    Foundation: 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20',
+    Construction: 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20',
+    Interior: 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20',
+    Completed: 'bg-brand-green/10 text-brand-green border border-brand-green/20',
+    'On Hold': 'bg-brand-pink/10 text-brand-pink border border-brand-pink/20',
   };
-  return map[status] || 'bg-gray-100 text-gray-700';
+  return map[status] || 'bg-gray-100 text-gray-700 border border-gray-200';
 }

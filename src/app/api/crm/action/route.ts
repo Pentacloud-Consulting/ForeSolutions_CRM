@@ -167,6 +167,39 @@ export async function POST(req: Request) {
         result = await Models.QuotationModel.findByIdAndDelete(id);
         break;
 
+      // ── INVENTORY PRODUCTS ──
+      case 'addInventoryProduct':
+        result = await Models.InventoryProduct.create(formattedPayload);
+        break;
+      case 'updateInventoryProduct':
+        result = await Models.InventoryProduct.findByIdAndUpdate(id, formattedPayload, { new: true });
+        break;
+      case 'deleteInventoryProduct':
+        result = await Models.InventoryProduct.findByIdAndDelete(id);
+        break;
+
+      // ── DEAL INVENTORY ITEMS ──
+      case 'addDealInventoryItem':
+        result = await Models.DealInventoryItem.create(formattedPayload);
+        break;
+      case 'updateDealInventoryItem':
+        result = await Models.DealInventoryItem.findByIdAndUpdate(id, formattedPayload, { new: true });
+        break;
+      case 'deleteDealInventoryItem':
+        result = await Models.DealInventoryItem.findByIdAndDelete(id);
+        break;
+
+      // ── PURCHASE ORDERS ──
+      case 'addPurchaseOrder':
+        result = await Models.PurchaseOrder.create(formattedPayload);
+        break;
+      case 'updatePurchaseOrder':
+        result = await Models.PurchaseOrder.findByIdAndUpdate(id, formattedPayload, { new: true });
+        break;
+      case 'deletePurchaseOrder':
+        result = await Models.PurchaseOrder.findByIdAndDelete(id);
+        break;
+
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }

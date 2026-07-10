@@ -3,8 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   CRMData, Lead, Account, Contact, Project,
-  Material, PaymentDelivered, OneTimePayment, PaymentReceived, ProjectDocument, OtherMaterial,
-  InteriorMaterial, FinancialSummary, MaterialCategory, Quotation,
+  InteriorMaterial, FinancialSummary, MaterialCategory, Quotation, InventoryProduct, DealInventoryItem, PurchaseOrder
 } from '@/lib/types';
 import { generateId, generateProjectId, nowISO } from '@/lib/utils';
 
@@ -22,6 +21,9 @@ const defaultData: CRMData = {
   otherMaterials: [],
   interiorMaterials: [],
   quotations: [],
+  purchaseOrders: [],
+  inventoryProducts: [],
+  dealInventoryItems: [],
   projectCounter: 1,
 };
 
@@ -95,6 +97,20 @@ interface DataContextType {
   getProjectFinancialSummary: (projectId: string) => FinancialSummary;
   getAccountProjects: (accountId: string) => Project[];
   getAccountContacts: (accountId: string) => Contact[];
+  // Global Inventory
+  addInventoryProduct: (p: Omit<InventoryProduct, 'id' | 'createdAt' | 'updatedAt'>) => InventoryProduct;
+  updateInventoryProduct: (id: string, updates: Partial<InventoryProduct>) => void;
+  deleteInventoryProduct: (id: string) => void;
+  // Deal Inventory
+  addDealInventoryItem: (item: Omit<DealInventoryItem, 'id' | 'totalAmount' | 'addedAt'>) => DealInventoryItem;
+  updateDealInventoryItem: (id: string, updates: Partial<DealInventoryItem>) => void;
+  deleteDealInventoryItem: (id: string) => void;
+  getDealInventoryItems: (dealId: string) => DealInventoryItem[];
+  // Purchase Orders
+  addPurchaseOrder: (po: Omit<PurchaseOrder, 'id' | 'createdAt'>) => PurchaseOrder;
+  updatePurchaseOrder: (id: string, updates: Partial<PurchaseOrder>) => void;
+  deletePurchaseOrder: (id: string) => void;
+  getProjectPurchaseOrders: (projectId: string) => PurchaseOrder[];
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -176,16 +192,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
     const account: Account = {
       id: accountId,
-      clientName: lead.leadName,
+      clientName: lead.companyName || lead.leadName,
+      companyRegistrationNumber: '',
+      vatNumber: '',
+      industry: lead.industry || '',
+      website: '',
       mobile: lead.mobile,
       alternateMobile: lead.alternateMobile,
       email: lead.email,
       address: lead.address,
       city: lead.city,
       state: '',
-      gstNumber: '',
-      panNumber: '',
-      aadhaarNumber: '',
       notes: '',
       convertedFromLeadId: lead.id,
       createdAt: now,
@@ -208,19 +225,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     const project: Project = {
       id: projectId,
       projectId: generateProjectId(projSeq),
-      projectName: lead.leadName,
+      projectName: lead.companyName || lead.leadName,
       accountId: accountId,
       contactId: contactId,
       convertedFromLeadId: lead.id,
-      projectLocation: lead.address,
-      projectType: 'Residential',
-      totalSiteArea: lead.plotArea,
-      builtUpArea: null,
-      numberOfFloors: null,
+      dealType: 'Hardware',
+      expectedCloseDate: '',
+      contractTermMonths: 12,
       startDate: '',
       endDate: '',
-      projectContractValue: lead.budget,
-      status: 'Planning',
+      dealValue: lead.budget,
+      status: 'Prospecting',
       isActive: true,
       createdAt: now,
       updatedAt: now,
@@ -532,6 +547,80 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const getProjectQuotations = useCallback((projectId: string) =>
     data.quotations.filter(q => q.projectId === projectId), [data.quotations]);
 
+  const addPurchaseOrder = useCallback((po: Omit<PurchaseOrder, 'id' | 'createdAt'>): PurchaseOrder => {
+    const newPO: PurchaseOrder = { ...po, id: generateId(), createdAt: nowISO() };
+    update(prev => ({ ...prev, purchaseOrders: [...prev.purchaseOrders, newPO] }));
+    syncAction('addPurchaseOrder', undefined, newPO);
+    return newPO;
+  }, [update]);
+
+  const deletePurchaseOrder = useCallback((id: string) => {
+    update(prev => ({ ...prev, purchaseOrders: prev.purchaseOrders.filter(po => po.id !== id) }));
+    syncAction('deletePurchaseOrder', id);
+  }, [update]);
+
+  const updatePurchaseOrder = useCallback((id: string, updates: Partial<PurchaseOrder>) => {
+    update(prev => ({
+      ...prev,
+      purchaseOrders: prev.purchaseOrders.map(po => po.id === id ? { ...po, ...updates } : po),
+    }));
+    syncAction('updatePurchaseOrder', id, updates);
+  }, [update]);
+
+  const getProjectPurchaseOrders = useCallback((projectId: string) =>
+    data.purchaseOrders.filter(po => po.projectId === projectId), [data.purchaseOrders]);
+
+  const addInventoryProduct = useCallback((p: Omit<InventoryProduct, 'id' | 'createdAt' | 'updatedAt'>): InventoryProduct => {
+    const newP: InventoryProduct = { ...p, id: generateId(), createdAt: nowISO(), updatedAt: nowISO() };
+    update(prev => ({ ...prev, inventoryProducts: [...prev.inventoryProducts, newP] }));
+    syncAction('addInventoryProduct', undefined, newP);
+    return newP;
+  }, [update]);
+
+  const updateInventoryProduct = useCallback((id: string, updates: Partial<InventoryProduct>) => {
+    update(prev => ({
+      ...prev,
+      inventoryProducts: prev.inventoryProducts.map(p => p.id === id ? { ...p, ...updates, updatedAt: nowISO() } : p),
+    }));
+    syncAction('updateInventoryProduct', id, updates);
+  }, [update]);
+
+  const deleteInventoryProduct = useCallback((id: string) => {
+    update(prev => ({ ...prev, inventoryProducts: prev.inventoryProducts.filter(p => p.id !== id) }));
+    syncAction('deleteInventoryProduct', id);
+  }, [update]);
+
+  const addDealInventoryItem = useCallback((item: Omit<DealInventoryItem, 'id' | 'totalAmount' | 'addedAt'>): DealInventoryItem => {
+    const product = data.inventoryProducts.find(p => p.id === item.productId);
+    const totalAmount = product ? item.quantity * product.unitPrice : 0;
+    const newItem: DealInventoryItem = { ...item, id: generateId(), totalAmount, addedAt: nowISO() };
+    update(prev => ({ ...prev, dealInventoryItems: [...prev.dealInventoryItems, newItem] }));
+    syncAction('addDealInventoryItem', undefined, newItem);
+    return newItem;
+  }, [data.inventoryProducts, update]);
+
+  const updateDealInventoryItem = useCallback((id: string, updates: Partial<DealInventoryItem>) => {
+    update(prev => ({
+      ...prev,
+      dealInventoryItems: prev.dealInventoryItems.map(item => {
+        if (item.id !== id) return item;
+        const updated = { ...item, ...updates };
+        const product = prev.inventoryProducts.find(p => p.id === updated.productId);
+        updated.totalAmount = product ? updated.quantity * product.unitPrice : 0;
+        return updated;
+      }),
+    }));
+    syncAction('updateDealInventoryItem', id, updates);
+  }, [update]);
+
+  const deleteDealInventoryItem = useCallback((id: string) => {
+    update(prev => ({ ...prev, dealInventoryItems: prev.dealInventoryItems.filter(item => item.id !== id) }));
+    syncAction('deleteDealInventoryItem', id);
+  }, [update]);
+
+  const getDealInventoryItems = useCallback((dealId: string) =>
+    data.dealInventoryItems.filter(item => item.projectId === dealId), [data.dealInventoryItems]);
+
   const getProjectFinancialSummary = useCallback((projectId: string): FinancialSummary => {
     const project = data.projects.find(p => p.id === projectId);
     const mats = data.materials.filter(m => m.projectId === projectId);
@@ -555,7 +644,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     const totalProjectCost = totalMaterialsCost + totalLabourCost + totalOneTimeExpenses + totalOtherMaterialsCost + totalInteriorMaterialsCost;
     
     const totalAmountReceived = received.reduce((s, p) => s + (p.amountReceived || 0), 0);
-    const contractValue = project?.projectContractValue || 0;
+    const contractValue = project?.dealValue || 0;
     const outstandingAmount = contractValue - totalAmountReceived;
     const profitLoss = totalAmountReceived - totalProjectCost;
 
@@ -598,6 +687,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         addOtherMaterial, updateOtherMaterial, deleteOtherMaterial, getProjectOtherMaterials,
         addInteriorMaterial, updateInteriorMaterial, deleteInteriorMaterial, getProjectInteriorMaterials,
         addQuotation, updateQuotation, deleteQuotation, getProjectQuotations,
+        addPurchaseOrder, updatePurchaseOrder, deletePurchaseOrder, getProjectPurchaseOrders,
+        addInventoryProduct, updateInventoryProduct, deleteInventoryProduct,
+        addDealInventoryItem, updateDealInventoryItem, deleteDealInventoryItem, getDealInventoryItems,
         getProjectFinancialSummary, getAccountProjects, getAccountContacts,
       }}
     >

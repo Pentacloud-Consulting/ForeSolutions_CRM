@@ -25,13 +25,14 @@ export type LeadStatus =
 export interface Lead {
   id: string;
   leadName: string;
+  companyName: string;
+  industry: string;
   mobile: string;
   alternateMobile: string;
   email: string;
   address: string;
   city: string;
-  requirementType: string;
-  plotArea: number | null;
+  interestedIn: string;
   budget: number | null;
   leadSource: LeadSource;
   status: LeadStatus;
@@ -44,15 +45,16 @@ export interface Lead {
 export interface Account {
   id: string;
   clientName: string;
+  companyRegistrationNumber: string;
+  vatNumber: string;
+  industry: string;
+  website: string;
   mobile: string;
   alternateMobile: string;
   email: string;
   address: string;
   city: string;
   state: string;
-  gstNumber: string;
-  panNumber: string;
-  aadhaarNumber: string;
   notes: string;
   convertedFromLeadId: string | null;
   createdAt: string;
@@ -74,37 +76,33 @@ export interface Contact {
 }
 
 // ── Projects ───────────────────────────────────────────────
-export type ProjectType =
-  | 'Residential'
-  | 'Commercial'
-  | 'Villa'
-  | 'Apartment'
-  | 'Renovation'
-  | 'Construction';
+export type DealType =
+  | 'Hardware'
+  | 'Software License'
+  | 'Service Contract'
+  | 'Blended';
 
 export type ProjectStatus =
-  | 'Planning'
-  | 'Foundation'
-  | 'Construction'
-  | 'Interior'
-  | 'Completed'
-  | 'On Hold';
+  | 'Prospecting'
+  | 'Qualification'
+  | 'Proposal'
+  | 'Negotiation'
+  | 'Closed Won'
+  | 'Closed Lost';
 
 export interface Project {
   id: string;
-  projectId: string; // e.g., PROJ-0001
+  projectId: string; // e.g., DEAL-0001
   projectName: string;
   accountId: string | null;
   contactId: string | null;
   convertedFromLeadId: string | null;
-  projectLocation: string;
-  projectType: ProjectType;
-  totalSiteArea: number | null;
-  builtUpArea: number | null;
-  numberOfFloors: number | null;
+  dealType: DealType;
+  expectedCloseDate: string;
+  contractTermMonths: number | null;
   startDate: string;
   endDate: string;
-  projectContractValue: number | null;
+  dealValue: number | null;
   status: ProjectStatus;
   isActive: boolean;
   createdAt: string;
@@ -260,28 +258,60 @@ export interface InteriorMaterial {
   createdAt: string;
 }
 
-// ── Interior Quotation (saved PDF quotation) ────────────────
+// ── Quotation (Tech/Services) ────────────────────────────────
 export interface QuotationLineItem {
-  floor: string;
-  category: string;
-  subCategory: string;
-  measurement: string;
-  area: number;
-  costPerSqft: number;
-  totalAmount: number;
-  notes: string;
+  id: string;
+  item: string;
+  description: string;
+  qty: number;
+  billingType: 'Monthly' | 'One-Off' | 'Annual';
+  unitPrice: number;
+  totalValue: number; // For monthly, might be Qty * UnitPrice * 12
 }
 
 export interface Quotation {
   id: string;
   projectId: string;
-  quotationNumber: string; // e.g. QT-0001
+  quotationNumber: string; // e.g. QT-000041
   clientName: string;
   projectName: string;
-  projectLocation: string;
+  reference: string;
   items: QuotationLineItem[];
-  grandTotal: number;
+  totalMonthlyRecurring: number;
+  totalOneOff: number;
+  totalFirstYear: number;
+  grandTotalIncVat: number;
   quotationDate: string;
+  createdAt: string;
+}
+
+// ── Purchase Order ───────────────────────────────────────────
+export interface PurchaseOrderLineItem {
+  id: string;
+  itemDescription: string;
+  stockType: 'Sale' | 'Rent' | 'Service';
+  qty: number;
+  rate: number;
+  vatPercent: number;
+  vatAmount: number;
+  amount: number;
+}
+
+export interface PurchaseOrder {
+  id: string;
+  projectId: string;
+  poNumber: string; // e.g. PO-Z001360
+  vendorName: string;
+  vendorAddress: string;
+  deliverTo: string;
+  poDate: string;
+  terms: string;
+  reference: string;
+  deliveryCost: number;
+  items: PurchaseOrderLineItem[];
+  subTotal: number;
+  totalVat: number;
+  grandTotal: number;
   createdAt: string;
 }
 
@@ -300,6 +330,31 @@ export interface FinancialSummary {
   materialsByCategory: Record<string, number>;
 }
 
+// ── Global Inventory ─────────────────────────────────────────
+export interface InventoryProduct {
+  id: string;
+  productName: string;
+  category: string;
+  billingType: 'One-Off' | 'Monthly Recurring';
+  unit: string;
+  unitPrice: number;
+  stockQuantity: number;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ── Deal Inventory (Child of Project/Deal) ─────────────────
+export interface DealInventoryItem {
+  id: string;
+  projectId: string; // The Deal ID
+  productId: string; // Refers to InventoryProduct.id
+  quantity: number;
+  totalAmount: number; // auto = quantity × InventoryProduct.unitPrice
+  notes: string;
+  addedAt: string;
+}
+
 // ── CRM Data Store ─────────────────────────────────────────
 export interface CRMData {
   leads: Lead[];
@@ -314,5 +369,8 @@ export interface CRMData {
   otherMaterials: OtherMaterial[];
   interiorMaterials: InteriorMaterial[];
   quotations: Quotation[];
+  purchaseOrders: PurchaseOrder[];
+  inventoryProducts: InventoryProduct[];
+  dealInventoryItems: DealInventoryItem[];
   projectCounter: number; // for auto-generating PROJ-XXXX
 }

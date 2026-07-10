@@ -42,24 +42,24 @@ export default function ContactDetailPage() {
           <ArrowLeft className="w-5 h-5 text-gray-500" />
         </button>
         <div className="flex-1">
-          <h2 className="text-2xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>
             {contact.contactName}
           </h2>
           <span className="text-xs text-gray-400">Created {formatDate(contact.createdAt)}</span>
         </div>
         {!editing ? (
-          <button onClick={() => { setForm(contact as unknown as Record<string, unknown>); setEditing(true); }} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 border" style={{ borderColor: '#E2E8F0' }}>Edit</button>
+          <button onClick={() => { setForm(contact as unknown as Record<string, unknown>); setEditing(true); }} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 border" style={{ borderColor: 'var(--border)' }}>Edit</button>
         ) : (
           <div className="flex gap-3">
             <button onClick={() => setEditing(false)} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-            <button onClick={handleSave} className="btn-gold"><Save className="w-4 h-4" /> Save</button>
+            <button onClick={handleSave} className="btn-primary"><Save className="w-4 h-4" /> Save</button>
           </div>
         )}
       </div>
 
       {/* Contact Info */}
-      <div className="bg-white rounded-xl p-6 shadow-sm mb-6" style={{ border: '1px solid #E2E8F0' }}>
-        <h3 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: '#C9A84C' }}>Contact Information</h3>
+      <div className="bg-surface rounded-xl p-6 mb-6" style={{ border: '1px solid var(--border)' }}>
+        <h3 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>Contact Information</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {[
             { label: 'Contact Name', key: 'contactName' },
@@ -72,7 +72,7 @@ export default function ContactDetailPage() {
               {editing ? (
                 <input className="crm-input" value={(form[f.key] as string) || ''} onChange={e => set(f.key, e.target.value)} />
               ) : (
-                <div className="text-sm font-medium" style={{ color: '#0F1C2E' }}>{(contact as unknown as Record<string, unknown>)[f.key] as string || '—'}</div>
+                <div className="text-sm font-medium" style={{ color: 'var(--ink)' }}>{(contact as unknown as Record<string, unknown>)[f.key] as string || '—'}</div>
               )}
             </div>
           ))}
@@ -85,7 +85,7 @@ export default function ContactDetailPage() {
               </select>
             ) : (
               account ? (
-                <Link href={`/crm/accounts/${account.id}`} className="text-sm font-medium hover:underline" style={{ color: '#C9A84C' }}>
+                <Link href={`/crm/accounts/${account.id}`} className="text-sm font-medium hover:underline" style={{ color: 'var(--brand-cyan)' }}>
                   {account.clientName}
                 </Link>
               ) : (
@@ -99,15 +99,15 @@ export default function ContactDetailPage() {
           {editing ? (
             <textarea className="crm-textarea" value={(form.address as string) || ''} onChange={e => set('address', e.target.value)} rows={2} />
           ) : (
-            <div className="text-sm" style={{ color: '#0F1C2E' }}>{contact.address || '—'}</div>
+            <div className="text-sm" style={{ color: 'var(--ink)' }}>{contact.address || '—'}</div>
           )}
         </div>
       </div>
 
       {/* Lookup: Linked Account */}
       {account && (
-        <div className="bg-white rounded-xl p-6 shadow-sm mb-6" style={{ border: '1px solid #E2E8F0' }}>
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>
+        <div className="bg-surface rounded-xl p-6 mb-6" style={{ border: '1px solid var(--border)' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>
             Linked Account Details
           </h3>
           <div className="lookup-display">
@@ -123,8 +123,8 @@ export default function ContactDetailPage() {
 
       {/* Lookup: Converted From Lead */}
       {lead && (
-        <div className="bg-white rounded-xl p-6 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>
+        <div className="bg-surface rounded-xl p-6" style={{ border: '1px solid var(--border)' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>
             Converted From Lead
           </h3>
           <div className="lookup-display">

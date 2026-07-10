@@ -2,8 +2,11 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { 
   Lead, Account, Contact, Project, Material, PaymentDelivered, 
-  OneTimePayment, PaymentReceived, ProjectDocument, OtherMaterial, InteriorMaterial, QuotationModel, Settings 
+  OneTimePayment, PaymentReceived, ProjectDocument, OtherMaterial, InteriorMaterial, QuotationModel, Settings,
+  InventoryProduct, DealInventoryItem, PurchaseOrder
 } from '@/lib/models';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -12,7 +15,8 @@ export async function GET() {
     const [
       leads, accounts, contacts, projects, materials, 
       paymentsDelivered, oneTimePayments, paymentsReceived, 
-      projectDocuments, otherMaterials, interiorMaterials, quotations, projectCounterDoc
+      projectDocuments, otherMaterials, interiorMaterials, quotations,
+      inventoryProducts, dealInventoryItems, purchaseOrders, projectCounterDoc
     ] = await Promise.all([
       Lead.find().lean(),
       Account.find().lean(),
@@ -26,6 +30,9 @@ export async function GET() {
       OtherMaterial.find().lean(),
       InteriorMaterial.find().lean(),
       QuotationModel.find().lean(),
+      InventoryProduct.find().lean(),
+      DealInventoryItem.find().lean(),
+      PurchaseOrder.find().lean(),
       Settings.findOne({ key: 'projectCounter' }).lean()
     ]);
 
@@ -50,6 +57,9 @@ export async function GET() {
       otherMaterials: formatData(otherMaterials),
       interiorMaterials: formatData(interiorMaterials),
       quotations: formatData(quotations),
+      inventoryProducts: formatData(inventoryProducts),
+      dealInventoryItems: formatData(dealInventoryItems),
+      purchaseOrders: formatData(purchaseOrders),
       projectCounter: projectCounterDoc ? projectCounterDoc.value : 1,
     });
   } catch (error) {

@@ -43,26 +43,26 @@ export default function AccountDetailPage() {
           <ArrowLeft className="w-5 h-5 text-gray-500" />
         </button>
         <div className="flex-1">
-          <h2 className="text-2xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>
             {account.clientName}
           </h2>
           <span className="text-xs text-gray-400">Created {formatDate(account.createdAt)}</span>
         </div>
         {!editing ? (
-          <button onClick={() => { setForm(account as unknown as Record<string, unknown>); setEditing(true); }} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 border" style={{ borderColor: '#E2E8F0' }}>
+          <button onClick={() => { setForm(account as unknown as Record<string, unknown>); setEditing(true); }} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 border" style={{ borderColor: 'var(--border)' }}>
             Edit
           </button>
         ) : (
           <div className="flex gap-3">
             <button onClick={() => setEditing(false)} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-            <button onClick={handleSave} className="btn-gold"><Save className="w-4 h-4" /> Save</button>
+            <button onClick={handleSave} className="btn-primary"><Save className="w-4 h-4" /> Save</button>
           </div>
         )}
       </div>
 
       {/* Account Info */}
-      <div className="bg-white rounded-xl p-6 shadow-sm mb-6" style={{ border: '1px solid #E2E8F0' }}>
-        <h3 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: '#C9A84C' }}>Account Information</h3>
+      <div className="bg-surface rounded-xl p-6 mb-6" style={{ border: '1px solid var(--border)' }}>
+        <h3 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>Account Information</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {[
             { label: 'Client Name', key: 'clientName' },
@@ -71,16 +71,17 @@ export default function AccountDetailPage() {
             { label: 'Email', key: 'email' },
             { label: 'City', key: 'city' },
             { label: 'State', key: 'state' },
-            { label: 'GST Number', key: 'gstNumber' },
-            { label: 'PAN Number', key: 'panNumber' },
-            { label: 'Aadhaar Number', key: 'aadhaarNumber' },
+            { label: 'Industry', key: 'industry' },
+            { label: 'Website', key: 'website' },
+            { label: 'Company Reg No', key: 'companyRegistrationNumber' },
+            { label: 'VAT Number', key: 'vatNumber' },
           ].map(f => (
             <div key={f.key}>
               <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#64748B' }}>{f.label}</div>
               {editing ? (
                 <input className="crm-input" value={(form[f.key] as string) || ''} onChange={e => set(f.key, e.target.value)} />
               ) : (
-                <div className="text-sm font-medium" style={{ color: '#0F1C2E' }}>{(account as unknown as Record<string, unknown>)[f.key] as string || '—'}</div>
+                <div className="text-sm font-medium" style={{ color: 'var(--ink)' }}>{(account as unknown as Record<string, unknown>)[f.key] as string || '—'}</div>
               )}
             </div>
           ))}
@@ -90,7 +91,7 @@ export default function AccountDetailPage() {
           {editing ? (
             <textarea className="crm-textarea" value={(form.address as string) || ''} onChange={e => set('address', e.target.value)} rows={2} />
           ) : (
-            <div className="text-sm" style={{ color: '#0F1C2E' }}>{account.address || '—'}</div>
+            <div className="text-sm" style={{ color: 'var(--ink)' }}>{account.address || '—'}</div>
           )}
         </div>
         <div className="mt-5">
@@ -98,15 +99,15 @@ export default function AccountDetailPage() {
           {editing ? (
             <textarea className="crm-textarea" value={(form.notes as string) || ''} onChange={e => set('notes', e.target.value)} rows={2} />
           ) : (
-            <div className="text-sm" style={{ color: '#0F1C2E' }}>{account.notes || '—'}</div>
+            <div className="text-sm" style={{ color: 'var(--ink)' }}>{account.notes || '—'}</div>
           )}
         </div>
       </div>
 
       {/* Lookup: Converted From Lead */}
       {lead && (
-        <div className="bg-white rounded-xl p-6 shadow-sm mb-6" style={{ border: '1px solid #E2E8F0' }}>
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>
+        <div className="bg-surface rounded-xl p-6 mb-6" style={{ border: '1px solid var(--border)' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>
             Converted From Lead
           </h3>
           <div className="lookup-display">
@@ -122,8 +123,8 @@ export default function AccountDetailPage() {
 
       {/* Related Projects */}
       {projects.length > 0 && (
-        <div className="bg-white rounded-xl p-6 shadow-sm mb-6" style={{ border: '1px solid #E2E8F0' }}>
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>
+        <div className="bg-surface rounded-xl p-6 mb-6" style={{ border: '1px solid var(--border)' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>
             Linked Projects ({projects.length})
           </h3>
           <div className="space-y-2">
@@ -132,10 +133,10 @@ export default function AccountDetailPage() {
                 key={p.id}
                 href={`/crm/projects/${p.id}`}
                 className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                style={{ border: '1px solid #E2E8F0' }}
+                style={{ border: '1px solid var(--border)' }}
               >
                 <div>
-                  <span className="text-sm font-semibold" style={{ color: '#0F1C2E' }}>{p.projectId}</span>
+                  <span className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{p.projectId}</span>
                   <span className="text-sm text-gray-500 ml-2">{p.projectName}</span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -152,8 +153,8 @@ export default function AccountDetailPage() {
 
       {/* Related Contacts */}
       {contacts.length > 0 && (
-        <div className="bg-white rounded-xl p-6 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
-          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>
+        <div className="bg-surface rounded-xl p-6" style={{ border: '1px solid var(--border)' }}>
+          <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>
             Linked Contacts ({contacts.length})
           </h3>
           <div className="space-y-2">
@@ -162,10 +163,10 @@ export default function AccountDetailPage() {
                 key={c.id}
                 href={`/crm/contacts/${c.id}`}
                 className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                style={{ border: '1px solid #E2E8F0' }}
+                style={{ border: '1px solid var(--border)' }}
               >
                 <div>
-                  <span className="text-sm font-semibold" style={{ color: '#0F1C2E' }}>{c.contactName}</span>
+                  <span className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{c.contactName}</span>
                   <span className="text-sm text-gray-500 ml-2">{c.mobile}</span>
                 </div>
                 <ExternalLink className="w-4 h-4 text-gray-300" />

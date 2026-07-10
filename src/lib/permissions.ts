@@ -14,7 +14,8 @@ export type Module =
   | 'paymentDelivered'
   | 'oneTimePayments'
   | 'paymentReceived'
-  | 'financialReports';
+  | 'financialReports'
+  | 'inventory';
 
 const permissionMatrix: Record<UserRole, Module[]> = {
   admin: [
@@ -28,6 +29,7 @@ const permissionMatrix: Record<UserRole, Module[]> = {
     'oneTimePayments',
     'paymentReceived',
     'financialReports',
+    'inventory',
   ],
   sales: ['dashboard', 'leads', 'accounts', 'contacts'],
   project_manager: ['dashboard', 'projects', 'materials', 'paymentDelivered'],

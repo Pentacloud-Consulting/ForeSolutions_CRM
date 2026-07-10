@@ -27,12 +27,12 @@ export default function AccountsPage() {
     <div className="animate-fade-in">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-3xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>
+          <h2 className="text-3xl font-bold font-display" style={{ color: 'var(--ink)' }}>
             Accounts
           </h2>
           <p className="text-gray-500 mt-1">{data.accounts.length} total accounts</p>
         </div>
-        <button className="btn-gold" onClick={() => setShowCreate(true)}>
+        <button className="btn-primary" onClick={() => setShowCreate(true)}>
           <Plus className="w-4 h-4" /> Add Account
         </button>
       </div>
@@ -47,16 +47,17 @@ export default function AccountsPage() {
         />
       </div>
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
               <tr>
                 <th>Client Name</th>
+                <th>Industry</th>
                 <th>Mobile</th>
                 <th>Email</th>
                 <th>City</th>
-                <th>GST Number</th>
+                <th>VAT Number</th>
                 <th>Created</th>
                 <th>Actions</th>
               </tr>
@@ -69,11 +70,12 @@ export default function AccountsPage() {
               ) : (
                 filtered.map(account => (
                   <tr key={account.id}>
-                    <td className="font-medium" style={{ color: '#0F1C2E' }}>{account.clientName}</td>
+                    <td className="font-medium" style={{ color: 'var(--ink)' }}>{account.clientName}</td>
+                    <td>{account.industry || '—'}</td>
                     <td>{account.mobile}</td>
                     <td className="text-gray-500">{truncate(account.email, 25)}</td>
                     <td>{account.city}</td>
-                    <td className="text-gray-500">{account.gstNumber || '—'}</td>
+                    <td className="text-gray-500">{account.vatNumber || '—'}</td>
                     <td className="text-gray-500 text-xs">{formatDate(account.createdAt)}</td>
                     <td>
                       <div className="flex items-center gap-2">
@@ -108,8 +110,8 @@ function CreateAccountModal({
 }) {
   const [form, setForm] = useState({
     clientName: '', mobile: '', alternateMobile: '', email: '',
-    address: '', city: '', state: '', gstNumber: '', panNumber: '',
-    aadhaarNumber: '', notes: '', convertedFromLeadId: null as string | null,
+    address: '', city: '', state: '', companyRegistrationNumber: '', vatNumber: '',
+    industry: '', website: '', notes: '', convertedFromLeadId: null as string | null,
   });
   const set = (key: string, val: string) => setForm(f => ({ ...f, [key]: val }));
 
@@ -118,26 +120,27 @@ function CreateAccountModal({
       <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content max-w-2xl" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Create Account</h2>
+            <h2 className="text-xl font-bold font-display" style={{ color: 'var(--ink)' }}>Create Account</h2>
             <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
           </div>
           <form onSubmit={e => { e.preventDefault(); onCreate(form); }} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Client Name *</label><input className="crm-input" value={form.clientName} onChange={e => set('clientName', e.target.value)} required /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Mobile *</label><input className="crm-input" value={form.mobile} onChange={e => set('mobile', e.target.value)} required /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Alternate Mobile</label><input className="crm-input" value={form.alternateMobile} onChange={e => set('alternateMobile', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Email</label><input type="email" className="crm-input" value={form.email} onChange={e => set('email', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>City</label><input className="crm-input" value={form.city} onChange={e => set('city', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>State</label><input className="crm-input" value={form.state} onChange={e => set('state', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>GST Number</label><input className="crm-input" value={form.gstNumber} onChange={e => set('gstNumber', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>PAN Number</label><input className="crm-input" value={form.panNumber} onChange={e => set('panNumber', e.target.value)} /></div>
-              <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Aadhaar Number</label><input className="crm-input" value={form.aadhaarNumber} onChange={e => set('aadhaarNumber', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Client Name *</label><input className="crm-input" value={form.clientName} onChange={e => set('clientName', e.target.value)} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Mobile *</label><input className="crm-input" value={form.mobile} onChange={e => set('mobile', e.target.value)} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Alternate Mobile</label><input className="crm-input" value={form.alternateMobile} onChange={e => set('alternateMobile', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Email</label><input type="email" className="crm-input" value={form.email} onChange={e => set('email', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>City</label><input className="crm-input" value={form.city} onChange={e => set('city', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>State</label><input className="crm-input" value={form.state} onChange={e => set('state', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Industry</label><input className="crm-input" value={form.industry} onChange={e => set('industry', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Website</label><input className="crm-input" value={form.website} onChange={e => set('website', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Company Reg No</label><input className="crm-input" value={form.companyRegistrationNumber} onChange={e => set('companyRegistrationNumber', e.target.value)} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>VAT Number</label><input className="crm-input" value={form.vatNumber} onChange={e => set('vatNumber', e.target.value)} /></div>
             </div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Address</label><textarea className="crm-textarea" value={form.address} onChange={e => set('address', e.target.value)} rows={2} /></div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Notes</label><textarea className="crm-textarea" value={form.notes} onChange={e => set('notes', e.target.value)} rows={2} /></div>
+            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Address</label><textarea className="crm-textarea" value={form.address} onChange={e => set('address', e.target.value)} rows={2} /></div>
+            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Notes</label><textarea className="crm-textarea" value={form.notes} onChange={e => set('notes', e.target.value)} rows={2} /></div>
             <div className="flex justify-end gap-3 pt-4">
               <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-              <button type="submit" className="btn-gold">Create Account</button>
+              <button type="submit" className="btn-primary">Create Account</button>
             </div>
           </form>
         </div>

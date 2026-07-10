@@ -41,13 +41,14 @@ export default function LeadDetailPage() {
   const handleSave = () => {
     updateLead(lead.id, {
       leadName: form.leadName as string,
+      companyName: form.companyName as string,
+      industry: form.industry as string,
+      interestedIn: form.interestedIn as string,
       mobile: form.mobile as string,
       alternateMobile: form.alternateMobile as string,
       email: form.email as string,
       address: form.address as string,
       city: form.city as string,
-      requirementType: form.requirementType as string,
-      plotArea: form.plotArea ? Number(form.plotArea) : null,
       budget: form.budget ? Number(form.budget) : null,
       leadSource: form.leadSource as LeadSource,
       status: form.status as LeadStatus,
@@ -74,7 +75,7 @@ export default function LeadDetailPage() {
           <ArrowLeft className="w-5 h-5 text-gray-500" />
         </button>
         <div className="flex-1">
-          <h2 className="text-2xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--ink)' }}>
             {lead.leadName}
           </h2>
           <div className="flex items-center gap-3 mt-1">
@@ -86,7 +87,7 @@ export default function LeadDetailPage() {
         </div>
         <div className="flex items-center gap-3">
           {!editing && (
-            <button onClick={() => { setForm(lead as unknown as Record<string, unknown>); setEditing(true); }} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors border" style={{ borderColor: '#E2E8F0' }}>
+            <button onClick={() => { setForm(lead as unknown as Record<string, unknown>); setEditing(true); }} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors border" style={{ borderColor: 'var(--border)' }}>
               Edit
             </button>
           )}
@@ -95,13 +96,13 @@ export default function LeadDetailPage() {
               <button onClick={() => setEditing(false)} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">
                 Cancel
               </button>
-              <button onClick={handleSave} className="btn-gold">
+              <button onClick={handleSave} className="btn-primary">
                 <Save className="w-4 h-4" /> Save
               </button>
             </>
           )}
           {canConvert && !convertResult && (
-            <button onClick={handleConvert} className="btn-gold">
+            <button onClick={handleConvert} className="btn-primary">
               <RefreshCw className="w-4 h-4" /> Convert Lead
             </button>
           )}
@@ -119,37 +120,37 @@ export default function LeadDetailPage() {
           <div className="grid sm:grid-cols-3 gap-4">
             <Link
               href={`/crm/accounts/${convertResult.account.id}`}
-              className="flex items-center gap-3 p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
-              style={{ border: '1px solid #E2E8F0' }}
+              className="flex items-center gap-3 p-4 bg-surface rounded-lg hover:shadow-md transition-shadow"
+              style={{ border: '1px solid var(--border)' }}
             >
-              <Building2 className="w-5 h-5" style={{ color: '#C9A84C' }} />
+              <Building2 className="w-5 h-5" style={{ color: 'var(--brand-cyan)' }} />
               <div>
                 <div className="text-xs text-gray-400">Account</div>
-                <div className="text-sm font-semibold" style={{ color: '#0F1C2E' }}>{convertResult.account.clientName}</div>
+                <div className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{convertResult.account.clientName}</div>
               </div>
               <ExternalLink className="w-4 h-4 text-gray-300 ml-auto" />
             </Link>
             <Link
               href={`/crm/contacts/${convertResult.contact.id}`}
-              className="flex items-center gap-3 p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
-              style={{ border: '1px solid #E2E8F0' }}
+              className="flex items-center gap-3 p-4 bg-surface rounded-lg hover:shadow-md transition-shadow"
+              style={{ border: '1px solid var(--border)' }}
             >
-              <Contact2 className="w-5 h-5" style={{ color: '#C9A84C' }} />
+              <Contact2 className="w-5 h-5" style={{ color: 'var(--brand-cyan)' }} />
               <div>
                 <div className="text-xs text-gray-400">Contact</div>
-                <div className="text-sm font-semibold" style={{ color: '#0F1C2E' }}>{convertResult.contact.contactName}</div>
+                <div className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>{convertResult.contact.contactName}</div>
               </div>
               <ExternalLink className="w-4 h-4 text-gray-300 ml-auto" />
             </Link>
             <Link
               href={`/crm/projects/${convertResult.project.id}`}
-              className="flex items-center gap-3 p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
-              style={{ border: '1px solid #E2E8F0' }}
+              className="flex items-center gap-3 p-4 bg-surface rounded-lg hover:shadow-md transition-shadow"
+              style={{ border: '1px solid var(--border)' }}
             >
-              <FolderKanban className="w-5 h-5" style={{ color: '#C9A84C' }} />
+              <FolderKanban className="w-5 h-5" style={{ color: 'var(--brand-cyan)' }} />
               <div>
-                <div className="text-xs text-gray-400">Project</div>
-                <div className="text-sm font-semibold" style={{ color: '#0F1C2E' }}>
+                <div className="text-xs text-gray-400">Deal</div>
+                <div className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>
                   {convertResult.project.projectId} — {convertResult.project.projectName}
                 </div>
               </div>
@@ -160,11 +161,20 @@ export default function LeadDetailPage() {
       )}
 
       {/* Detail Fields */}
-      <div className="bg-white rounded-xl p-6 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
-        <h3 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: '#C9A84C' }}>Lead Information</h3>
+      <div className="bg-surface rounded-xl p-6" style={{ border: '1px solid var(--border)' }}>
+        <h3 className="text-sm font-semibold mb-4 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>Lead Information</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Field label="Lead Name" value={editing ? undefined : lead.leadName}>
             {editing && <input className="crm-input" value={(form.leadName as string) || ''} onChange={e => set('leadName', e.target.value)} />}
+          </Field>
+          <Field label="Company Name" value={editing ? undefined : lead.companyName}>
+            {editing && <input className="crm-input" value={(form.companyName as string) || ''} onChange={e => set('companyName', e.target.value)} />}
+          </Field>
+          <Field label="Industry" value={editing ? undefined : lead.industry}>
+            {editing && <input className="crm-input" value={(form.industry as string) || ''} onChange={e => set('industry', e.target.value)} />}
+          </Field>
+          <Field label="Interested In" value={editing ? undefined : lead.interestedIn}>
+            {editing && <input className="crm-input" value={(form.interestedIn as string) || ''} onChange={e => set('interestedIn', e.target.value)} />}
           </Field>
           <Field label="Mobile" value={editing ? undefined : lead.mobile}>
             {editing && <input className="crm-input" value={(form.mobile as string) || ''} onChange={e => set('mobile', e.target.value)} />}
@@ -177,12 +187,6 @@ export default function LeadDetailPage() {
           </Field>
           <Field label="City" value={editing ? undefined : lead.city}>
             {editing && <input className="crm-input" value={(form.city as string) || ''} onChange={e => set('city', e.target.value)} />}
-          </Field>
-          <Field label="Requirement Type" value={editing ? undefined : lead.requirementType}>
-            {editing && <input className="crm-input" value={(form.requirementType as string) || ''} onChange={e => set('requirementType', e.target.value)} />}
-          </Field>
-          <Field label="Plot Area (sq.ft)" value={editing ? undefined : (lead.plotArea ? `${lead.plotArea} sq.ft` : '—')}>
-            {editing && <input type="number" className="crm-input" value={(form.plotArea as string) || ''} onChange={e => set('plotArea', e.target.value)} />}
           </Field>
           <Field label="Budget" value={editing ? undefined : formatCurrency(lead.budget)}>
             {editing && <input type="number" className="crm-input" value={(form.budget as string) || ''} onChange={e => set('budget', e.target.value)} />}
@@ -231,7 +235,7 @@ function Field({
       <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#64748B' }}>
         {label}
       </div>
-      {children || <div className="text-sm font-medium" style={{ color: '#0F1C2E' }}>{value || '—'}</div>}
+      {children || <div className="text-sm font-medium" style={{ color: 'var(--ink)' }}>{value || '—'}</div>}
     </div>
   );
 }

@@ -4,9 +4,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { DataProvider } from "@/contexts/DataContext";
 
 export const metadata: Metadata = {
-  title: "Pentahouse CRM — Real Estate & Construction",
+  title: "Fore Solutions CRM — Real Estate & Construction",
   description:
-    "Professional CRM for real estate and construction management by Pentahouse Constructions. Track leads, projects, finances, and more.",
+    "Professional CRM for real estate and construction management by Fore Solutions. Track leads, projects, finances, and more.",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <AuthProvider>
           <DataProvider>{children}</DataProvider>
         </AuthProvider>

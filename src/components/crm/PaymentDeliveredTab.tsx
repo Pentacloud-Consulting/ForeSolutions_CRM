@@ -26,16 +26,16 @@ export default function PaymentDeliveredTab({ projectId }: { projectId: string }
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold" style={{ color: '#0F1C2E' }}>Payment Delivered ({payments.length})</h3>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Payment Delivered ({payments.length})</h3>
         </div>
-        <button className="btn-gold text-sm" onClick={() => setShowCreate(true)}>
+        <button className="btn-primary text-sm" onClick={() => setShowCreate(true)}>
           <Plus className="w-4 h-4" /> Add Payment
         </button>
       </div>
 
       {Object.keys(categoryTotals).length > 0 && (
-        <div className="bg-white rounded-xl p-5 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
-          <h4 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>Category Totals</h4>
+        <div className="bg-surface rounded-xl p-5" style={{ border: '1px solid var(--border)' }}>
+          <h4 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>Category Totals</h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {paymentTypes.map(cat => {
               const val = categoryTotals[cat];
@@ -43,19 +43,19 @@ export default function PaymentDeliveredTab({ projectId }: { projectId: string }
               return (
                 <div key={cat} className="flex justify-between p-3 rounded-lg" style={{ background: '#F8FAFC' }}>
                   <span className="text-xs font-medium text-gray-600">{cat}</span>
-                  <span className="text-xs font-bold" style={{ color: '#0F1C2E' }}>{formatCurrency(val)}</span>
+                  <span className="text-xs font-bold" style={{ color: 'var(--ink)' }}>{formatCurrency(val)}</span>
                 </div>
               );
             })}
           </div>
-          <div className="mt-3 pt-3 flex justify-between font-semibold" style={{ borderTop: '2px solid #C9A84C' }}>
-            <span className="text-sm" style={{ color: '#0F1C2E' }}>Grand Total</span>
-            <span className="text-sm" style={{ color: '#C9A84C' }}>{formatCurrency(grandTotal)}</span>
+          <div className="mt-3 pt-3 flex justify-between font-semibold" style={{ borderTop: '2px solid var(--brand-cyan)' }}>
+            <span className="text-sm" style={{ color: 'var(--ink)' }}>Grand Total</span>
+            <span className="text-sm" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(grandTotal)}</span>
           </div>
         </div>
       )}
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
@@ -75,9 +75,9 @@ export default function PaymentDeliveredTab({ projectId }: { projectId: string }
               ) : (
                 payments.map(p => (
                   <tr key={p.id}>
-                    <td className="font-medium" style={{ color: '#0F1C2E' }}>{p.paymentType}</td>
+                    <td className="font-medium" style={{ color: 'var(--ink)' }}>{p.paymentType}</td>
                     <td className="text-xs text-gray-500">{formatDate(p.date)}</td>
-                    <td className="font-semibold" style={{ color: '#C9A84C' }}>{formatCurrency(p.amount)}</td>
+                    <td className="font-semibold" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(p.amount)}</td>
                     <td>{p.paymentMode}</td>
                     <td>{p.paidTo || '—'}</td>
                     <td className="text-xs text-gray-500 max-w-[200px] truncate">{p.description || '—'}</td>
@@ -99,7 +99,7 @@ export default function PaymentDeliveredTab({ projectId }: { projectId: string }
           <div className="modal-overlay" onClick={() => setShowCreate(false)}>
             <div className="modal-content max-w-xl" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Add Labour Payment</h2>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--ink)' }}>Add Labour Payment</h2>
                 <button onClick={() => setShowCreate(false)} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
               </div>
               <PaymentDeliveredForm
@@ -133,19 +133,19 @@ function PaymentDeliveredForm({ projectId, onSubmit, onCancel }: {
       onSubmit({ projectId, ...form, amount: form.amount ? Number(form.amount) : null });
     }} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Payment Type</label>
+        <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Payment Type</label>
           <select className="crm-select" value={form.paymentType} onChange={e => set('paymentType', e.target.value)}>{paymentTypes.map(t => <option key={t} value={t}>{t}</option>)}</select></div>
-        <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Date</label><input type="date" className="crm-input" value={form.date} onChange={e => set('date', e.target.value)} /></div>
-        <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Amount (₹) *</label><input type="number" className="crm-input" value={form.amount} onChange={e => set('amount', e.target.value)} required /></div>
-        <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Payment Mode</label>
+        <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Date</label><input type="date" className="crm-input" value={form.date} onChange={e => set('date', e.target.value)} /></div>
+        <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Amount (₹) *</label><input type="number" className="crm-input" value={form.amount} onChange={e => set('amount', e.target.value)} required /></div>
+        <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Payment Mode</label>
           <select className="crm-select" value={form.paymentMode} onChange={e => set('paymentMode', e.target.value)}>{paymentModes.map(m => <option key={m} value={m}>{m}</option>)}</select></div>
-        <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Paid To</label><input className="crm-input" value={form.paidTo} onChange={e => set('paidTo', e.target.value)} /></div>
-        <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Attachment</label><input type="file" className="crm-input text-xs" onChange={e => set('attachment', e.target.files?.[0]?.name || '')} /></div>
+        <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Paid To</label><input className="crm-input" value={form.paidTo} onChange={e => set('paidTo', e.target.value)} /></div>
+        <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Attachment</label><input type="file" className="crm-input text-xs" onChange={e => set('attachment', e.target.files?.[0]?.name || '')} /></div>
       </div>
-      <div><label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Description</label><textarea className="crm-textarea" value={form.description} onChange={e => set('description', e.target.value)} rows={2} /></div>
+      <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Description</label><textarea className="crm-textarea" value={form.description} onChange={e => set('description', e.target.value)} rows={2} /></div>
       <div className="flex justify-end gap-3 pt-4">
         <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-        <button type="submit" className="btn-gold">Add Payment</button>
+        <button type="submit" className="btn-primary">Add Payment</button>
       </div>
     </form>
   );

@@ -16,14 +16,14 @@ export default function ProjectDocumentsTab({ projectId }: { projectId: string }
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold" style={{ color: '#0F1C2E' }}>Project Documents ({documents.length})</h3>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Project Documents ({documents.length})</h3>
         </div>
-        <button className="btn-gold text-sm" onClick={() => setShowCreate(true)}>
+        <button className="btn-primary text-sm" onClick={() => setShowCreate(true)}>
           <Plus className="w-4 h-4" /> Upload Document
         </button>
       </div>
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
@@ -40,7 +40,7 @@ export default function ProjectDocumentsTab({ projectId }: { projectId: string }
               ) : (
                 documents.map(d => (
                   <tr key={d.id}>
-                    <td className="font-medium" style={{ color: '#0F1C2E' }}>
+                    <td className="font-medium" style={{ color: 'var(--ink)' }}>
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4 text-gray-400" />
                         {d.documentName}
@@ -90,7 +90,7 @@ export default function ProjectDocumentsTab({ projectId }: { projectId: string }
           <div className="modal-overlay" onClick={() => setShowCreate(false)}>
             <div className="modal-content max-w-xl" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Upload Document</h2>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--ink)' }}>Upload Document</h2>
                 <button onClick={() => setShowCreate(false)} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
               </div>
               <DocumentForm
@@ -108,7 +108,7 @@ export default function ProjectDocumentsTab({ projectId }: { projectId: string }
           <div className="modal-overlay" onClick={() => setEditDoc(null)}>
             <div className="modal-content max-w-xl" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Edit Document</h2>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--ink)' }}>Edit Document</h2>
                 <button onClick={() => setEditDoc(null)} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
               </div>
               <DocumentForm
@@ -175,15 +175,15 @@ function DocumentForm({ projectId, initialData, onSubmit, onCancel }: {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Document Name *</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Document Name *</label>
           <input className="crm-input" value={form.documentName} onChange={e => set('documentName', e.target.value)} required placeholder="e.g. Floor Plan, Contract..." />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Date</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Date</label>
           <input type="date" className="crm-input" value={form.documentDate} onChange={e => set('documentDate', e.target.value)} required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Attachment {initialData ? '' : '*'}</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Attachment {initialData ? '' : '*'}</label>
           {initialData && form.attachment && !selectedFile && (
             <div className="mb-2 text-sm text-gray-500">
               Current: <a href={form.attachment} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">View File</a>
@@ -204,7 +204,7 @@ function DocumentForm({ projectId, initialData, onSubmit, onCancel }: {
       </div>
       <div className="flex justify-end gap-3 pt-4">
         <button type="button" onClick={onCancel} disabled={isUploading} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 disabled:opacity-50">Cancel</button>
-        <button type="submit" disabled={isUploading} className="btn-gold disabled:opacity-50">
+        <button type="submit" disabled={isUploading} className="btn-primary disabled:opacity-50">
           {isUploading ? 'Uploading...' : (initialData ? 'Update Document' : 'Upload Document')}
         </button>
       </div>

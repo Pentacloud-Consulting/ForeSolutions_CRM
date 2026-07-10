@@ -72,22 +72,22 @@ const QuotationPrintLayout = React.forwardRef<HTMLDivElement, Props>(
           .q-meta { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 12.5px; }
           .q-meta-left div, .q-meta-right div { margin-bottom: 3px; }
           .q-meta-label { font-weight: bold; color: #1a2332; }
-          .q-intro { background: #f8f6f0; border-left: 4px solid #C9A84C; padding: 10px 14px; margin-bottom: 20px; font-size: 12px; color: #333; }
+          .q-intro { background: #f8f6f0; border-left: 4px solid var(--brand-cyan); padding: 10px 14px; margin-bottom: 20px; font-size: 12px; color: #333; }
           .q-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
           .q-table tr { page-break-inside: avoid; }
-          .q-table th { background: #1a2332; color: #C9A84C; text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 10px 8px; text-align: left; border: 1px solid #1a2332; }
+          .q-table th { background: #1a2332; color: var(--brand-cyan); text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 10px 8px; text-align: left; border: 1px solid #1a2332; }
           .q-table th:nth-child(3), .q-table th:nth-child(4), .q-table th:nth-child(5) { text-align: right; }
           .q-table td { padding: 8px; border: 1px solid #ddd; vertical-align: top; font-size: 12px; }
           .q-table td:nth-child(3), .q-table td:nth-child(4), .q-table td:nth-child(5) { text-align: right; white-space: nowrap; }
           .q-cat-row td { background: #f0ede4; font-weight: 800; font-size: 13px; color: #1a2332; padding: 8px; }
           .q-sub-desc { font-size: 11px; color: #555; margin-top: 4px; line-height: 1.4; }
           .q-sub-title { font-weight: 700; color: #1a2332; }
-          .q-total-row td { background: #1a2332; color: #C9A84C; font-weight: 800; font-size: 14px; padding: 10px 8px; border: 1px solid #1a2332; }
+          .q-total-row td { background: #1a2332; color: var(--brand-cyan); font-weight: 800; font-size: 14px; padding: 10px 8px; border: 1px solid #1a2332; }
           .q-payment-section { margin-top: 24px; page-break-inside: avoid; }
-          .q-payment-section h3 { font-size: 14px; font-weight: 800; color: #1a2332; border-bottom: 2px solid #C9A84C; padding-bottom: 6px; margin-bottom: 12px; }
+          .q-payment-section h3 { font-size: 14px; font-weight: 800; color: #1a2332; border-bottom: 2px solid var(--brand-cyan); padding-bottom: 6px; margin-bottom: 12px; }
           .q-pay-table { width: 100%; border-collapse: collapse; }
           .q-pay-table td { padding: 6px 10px; border: 1px solid #ddd; font-size: 12px; }
-          .q-pay-table tr:last-child td { background: #1a2332; color: #C9A84C; font-weight: 800; }
+          .q-pay-table tr:last-child td { background: #1a2332; color: var(--brand-cyan); font-weight: 800; }
           .q-note { margin-top: 20px; padding: 10px 14px; background: #fef9e7; border: 1px solid #f0d77b; border-radius: 4px; font-size: 11.5px; color: #665a1e; }
           @media screen {
             .q-footer-fixed { display: none; }

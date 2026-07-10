@@ -36,14 +36,14 @@ export default function InteriorMaterialsTab({ projectId }: { projectId: string 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold" style={{ color: '#0F1C2E' }}>Saved Quotations ({quotations.length})</h3>
-        <button className="btn-gold text-sm" onClick={() => { setEditingQuotation(null); setShowBuilder(true); }}>
+        <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Saved Quotations ({quotations.length})</h3>
+        <button className="btn-primary text-sm" onClick={() => { setEditingQuotation(null); setShowBuilder(true); }}>
           <Plus className="w-4 h-4" /> Create New Quotation
         </button>
       </div>
 
       {/* Quotations List */}
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
@@ -66,7 +66,7 @@ export default function InteriorMaterialsTab({ projectId }: { projectId: string 
                     <td>{formatDate(q.quotationDate)}</td>
                     <td>{q.clientName || '—'}</td>
                     <td>{q.items.length} items</td>
-                    <td className="font-bold" style={{ color: '#C9A84C' }}>{formatCurrency(q.grandTotal)}</td>
+                    <td className="font-bold" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(q.grandTotal)}</td>
                     <td>
                       <div className="flex items-center gap-2">
                         <button
@@ -187,7 +187,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
 
           <div className="flex items-center justify-between mb-4 flex-shrink-0">
             <div>
-              <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Quotation Builder</h2>
+              <h2 className="text-xl font-bold" style={{ color: 'var(--ink)' }}>Quotation Builder</h2>
               <p className="text-sm text-gray-500">Add items to build the quotation, then generate the PDF.</p>
             </div>
             <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
@@ -199,7 +199,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-5 rounded-xl border border-gray-200">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Date</label>
-                <input type="date" className="crm-input bg-white" value={quoteMeta.quotationDate} onChange={e => setQuoteMeta({ ...quoteMeta, quotationDate: e.target.value })} />
+                <input type="date" className="crm-input bg-surface" value={quoteMeta.quotationDate} onChange={e => setQuoteMeta({ ...quoteMeta, quotationDate: e.target.value })} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Client</label>
@@ -269,7 +269,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
 
             {/* Add/Edit Item Form */}
             {showItemForm ? (
-              <div className="bg-yellow-50/30 p-5 md:p-6 rounded-xl border border-yellow-200 shadow-sm">
+              <div className="bg-yellow-50/30 p-5 md:p-6 rounded-xl border border-yellow-200">
                 <ItemForm
                   key={editingItemIndex ?? 'new'}
                   initialItem={editingItemIndex !== null ? items[editingItemIndex] : undefined}
@@ -303,7 +303,7 @@ function QuotationBuilder({ projectId, project, account, initialQuotation, onClo
           <div className="flex items-center justify-between pt-4 border-t mt-4 flex-shrink-0">
             <div className="text-lg">
               <span className="text-gray-500 font-medium mr-2">Grand Total:</span>
-              <span className="font-bold" style={{ color: '#C9A84C' }}>{formatCurrency(grandTotal)}</span>
+              <span className="font-bold" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(grandTotal)}</span>
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
@@ -403,14 +403,14 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
         <div>
           <label className="block text-xs font-semibold mb-1 text-gray-700">Floor *</label>
-          <select className="crm-input bg-white" value={form.floor} onChange={e => set('floor', e.target.value)}>
+          <select className="crm-input bg-surface" value={form.floor} onChange={e => set('floor', e.target.value)}>
             {FLOORS.map(f => <option key={f} value={f}>{f}</option>)}
           </select>
         </div>
 
         <div>
           <label className="block text-xs font-semibold mb-1 text-gray-700">Category *</label>
-          <select className="crm-input bg-white" value={form.category} onChange={e => handleCategoryChange(e.target.value)}>
+          <select className="crm-input bg-surface" value={form.category} onChange={e => handleCategoryChange(e.target.value)}>
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
@@ -420,7 +420,7 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
           <input 
             type="text" 
             list="sub-category-list"
-            className="crm-input bg-white" 
+            className="crm-input bg-surface" 
             value={form.subCategory} 
             onChange={e => handleSubCategoryChange(e.target.value)} 
             placeholder="Select or type custom..." 
@@ -436,7 +436,7 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
           <label className="block text-xs font-semibold mb-1 text-gray-700">Measurement (W x H)</label>
           <input
             type="text"
-            className="crm-input bg-white"
+            className="crm-input bg-surface"
             value={form.measurement} onChange={e => handleMeasurementChange(e.target.value)}
             placeholder="e.g. 6.8x7"
           />
@@ -446,7 +446,7 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
           <label className="block text-xs font-semibold mb-1 text-gray-700">Area (Sq.ft) *</label>
           <input
             type="number" step="0.01"
-            className="crm-input bg-white"
+            className="crm-input bg-surface"
             value={form.area} onChange={e => set('area', e.target.value)}
             placeholder="e.g. 47.6"
           />
@@ -454,18 +454,18 @@ function ItemForm({ initialItem, onSave, onCancel }: { initialItem?: QuotationLi
 
         <div>
           <label className="block text-xs font-semibold mb-1 text-gray-700">Cost per Sq.ft *</label>
-          <input type="number" step="0.01" className="crm-input bg-white" value={form.costPerSqft} onChange={e => set('costPerSqft', e.target.value)} placeholder="e.g. 1500" />
+          <input type="number" step="0.01" className="crm-input bg-surface" value={form.costPerSqft} onChange={e => set('costPerSqft', e.target.value)} placeholder="e.g. 1500" />
         </div>
 
         <div className="md:col-span-2 xl:col-span-4">
           <label className="block text-xs font-semibold mb-1 text-gray-700">Description (appears in PDF)</label>
-          <textarea className="crm-input bg-white" value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Auto-filled based on category. Edit as needed..." rows={2} />
+          <textarea className="crm-input bg-surface" value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Auto-filled based on category. Edit as needed..." rows={2} />
         </div>
       </div>
 
       <div className="flex justify-end gap-2 pt-2">
         <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-        <button type="button" onClick={handleSubmit} className="btn-gold text-sm px-6 py-2">
+        <button type="button" onClick={handleSubmit} className="btn-primary text-sm px-6 py-2">
           {initialItem ? 'Update Item' : 'Add to Quotation'}
         </button>
       </div>

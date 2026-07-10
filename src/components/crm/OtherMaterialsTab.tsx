@@ -22,35 +22,35 @@ export default function OtherMaterialsTab({ projectId }: { projectId: string }) 
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold" style={{ color: '#0F1C2E' }}>Other Materials ({materials.length})</h3>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>Other Materials ({materials.length})</h3>
         </div>
-        <button className="btn-gold text-sm" onClick={() => setShowCreate(true)}>
+        <button className="btn-primary text-sm" onClick={() => setShowCreate(true)}>
           <Plus className="w-4 h-4" /> Add Other Material
         </button>
       </div>
 
       {Object.keys(categoryTotals).length > 0 && (
-        <div className="bg-white rounded-xl p-5 shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
-          <h4 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: '#C9A84C' }}>Material Totals</h4>
+        <div className="bg-surface rounded-xl p-5" style={{ border: '1px solid var(--border)' }}>
+          <h4 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--brand-cyan)' }}>Material Totals</h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {Object.keys(categoryTotals).map(cat => {
               const val = categoryTotals[cat];
               return (
                 <div key={cat} className="flex justify-between p-3 rounded-lg" style={{ background: '#F8FAFC' }}>
                   <span className="text-xs font-medium text-gray-600 truncate mr-2" title={cat}>{cat}</span>
-                  <span className="text-xs font-bold" style={{ color: '#0F1C2E' }}>{formatCurrency(val)}</span>
+                  <span className="text-xs font-bold" style={{ color: 'var(--ink)' }}>{formatCurrency(val)}</span>
                 </div>
               );
             })}
           </div>
-          <div className="mt-3 pt-3 flex justify-between font-semibold" style={{ borderTop: '2px solid #C9A84C' }}>
-            <span className="text-sm" style={{ color: '#0F1C2E' }}>Grand Total</span>
-            <span className="text-sm" style={{ color: '#C9A84C' }}>{formatCurrency(grandTotal)}</span>
+          <div className="mt-3 pt-3 flex justify-between font-semibold" style={{ borderTop: '2px solid var(--brand-cyan)' }}>
+            <span className="text-sm" style={{ color: 'var(--ink)' }}>Grand Total</span>
+            <span className="text-sm" style={{ color: 'var(--brand-cyan)' }}>{formatCurrency(grandTotal)}</span>
           </div>
         </div>
       )}
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm" style={{ border: '1px solid #E2E8F0' }}>
+      <div className="bg-surface rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
         <div className="overflow-x-auto">
           <table className="crm-table">
             <thead>
@@ -67,14 +67,14 @@ export default function OtherMaterialsTab({ projectId }: { projectId: string }) 
               ) : (
                 materials.map(m => (
                   <tr key={m.id}>
-                    <td className="font-medium" style={{ color: '#0F1C2E' }}>
+                    <td className="font-medium" style={{ color: 'var(--ink)' }}>
                       <div className="flex items-center gap-2">
                         <Package className="w-4 h-4 text-gray-400" />
                         {m.materialName}
                       </div>
                     </td>
                     <td className="text-xs text-gray-500">{formatDate(m.date)}</td>
-                    <td className="font-semibold" style={{ color: '#0F1C2E' }}>{formatCurrency(m.amount)}</td>
+                    <td className="font-semibold" style={{ color: 'var(--ink)' }}>{formatCurrency(m.amount)}</td>
                     <td>
                       <button onClick={() => { if (confirm('Delete?')) deleteOtherMaterial(m.id); }} className="p-1 rounded hover:bg-red-50">
                         <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -94,7 +94,7 @@ export default function OtherMaterialsTab({ projectId }: { projectId: string }) 
           <div className="modal-overlay" onClick={() => setShowCreate(false)}>
             <div className="modal-content max-w-xl" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold" style={{ color: '#0F1C2E', fontFamily: "'Playfair Display', serif" }}>Add Other Material</h2>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--ink)' }}>Add Other Material</h2>
                 <button onClick={() => setShowCreate(false)} className="p-2 rounded-lg hover:bg-gray-100"><X className="w-5 h-5 text-gray-400" /></button>
               </div>
               <MaterialForm
@@ -129,21 +129,21 @@ function MaterialForm({ projectId, onSubmit, onCancel }: {
     }} className="space-y-4">
       <div className="grid grid-cols-1 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Material Name *</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Material Name *</label>
           <input className="crm-input" value={form.materialName} onChange={e => set('materialName', e.target.value)} required placeholder="e.g. Nails, Threads..." />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Date</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Date</label>
           <input type="date" className="crm-input" value={form.date} onChange={e => set('date', e.target.value)} required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#0F1C2E' }}>Amount (₹) *</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Amount (₹) *</label>
           <input type="number" className="crm-input" value={form.amount} onChange={e => set('amount', e.target.value)} required />
         </div>
       </div>
       <div className="flex justify-end gap-3 pt-4">
         <button type="button" onClick={onCancel} className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancel</button>
-        <button type="submit" className="btn-gold">Add Material</button>
+        <button type="submit" className="btn-primary">Add Material</button>
       </div>
     </form>
   );
