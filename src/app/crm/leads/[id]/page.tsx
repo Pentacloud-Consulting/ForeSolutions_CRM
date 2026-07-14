@@ -49,7 +49,7 @@ export default function LeadDetailPage() {
       email: form.email as string,
       address: form.address as string,
       city: form.city as string,
-      budget: form.budget ? Number(form.budget) : null,
+
       leadSource: form.leadSource as LeadSource,
       status: form.status as LeadStatus,
       notes: form.notes as string,
@@ -188,9 +188,7 @@ export default function LeadDetailPage() {
           <Field label="City" value={editing ? undefined : lead.city}>
             {editing && <input className="crm-input" value={(form.city as string) || ''} onChange={e => set('city', e.target.value)} />}
           </Field>
-          <Field label="Budget" value={editing ? undefined : formatCurrency(lead.budget)}>
-            {editing && <input type="number" className="crm-input" value={(form.budget as string) || ''} onChange={e => set('budget', e.target.value)} />}
-          </Field>
+
           <Field label="Lead Source" value={editing ? undefined : lead.leadSource}>
             {editing && (
               <select className="crm-select" value={(form.leadSource as string) || ''} onChange={e => set('leadSource', e.target.value)}>

@@ -162,7 +162,6 @@ function CreateLeadModal({
     email: '',
     address: '',
     city: '',
-    budget: '',
     leadSource: 'Website' as LeadSource,
     status: 'New' as LeadStatus,
     notes: '',
@@ -174,7 +173,6 @@ function CreateLeadModal({
     e.preventDefault();
     onCreate({
       ...form,
-      budget: form.budget ? Number(form.budget) : null,
     });
   };
 
@@ -224,10 +222,7 @@ function CreateLeadModal({
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>City</label>
                 <input className="crm-input" value={form.city} onChange={e => set('city', e.target.value)} />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Budget (₹)</label>
-                <input type="number" className="crm-input" value={form.budget} onChange={e => set('budget', e.target.value)} />
-              </div>
+
               <div>
                 <label className="block text-sm font-medium mb-1" style={{ color: 'var(--ink)' }}>Lead Source</label>
                 <select className="crm-select" value={form.leadSource} onChange={e => set('leadSource', e.target.value)}>

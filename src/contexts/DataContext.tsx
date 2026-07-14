@@ -235,7 +235,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       contractTermMonths: 12,
       startDate: '',
       endDate: '',
-      dealValue: lead.budget,
+      dealValue: null,
       status: 'Prospecting',
       isActive: true,
       createdAt: now,

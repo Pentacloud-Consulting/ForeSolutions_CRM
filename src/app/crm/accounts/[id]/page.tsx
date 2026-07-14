@@ -115,7 +115,7 @@ export default function AccountDetailPage() {
               <div className="lookup-item"><span>Lead Name</span><span>{lead.leadName}</span></div>
               <div className="lookup-item"><span>Mobile</span><span>{lead.mobile}</span></div>
               <div className="lookup-item"><span>Lead Source</span><span>{lead.leadSource}</span></div>
-              <div className="lookup-item"><span>Budget</span><span>{formatCurrency(lead.budget)}</span></div>
+
             </div>
           </div>
         </div>

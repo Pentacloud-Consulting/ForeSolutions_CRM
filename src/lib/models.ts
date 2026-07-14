@@ -20,7 +20,7 @@ const leadSchema = new mongoose.Schema({
   city: { type: String, default: '' },
   requirementType: { type: String, default: '' },
   plotArea: { type: Number, default: null },
-  budget: { type: Number, default: null },
+
   leadSource: { type: String, default: 'Other' },
   status: { type: String, default: 'New' },
   notes: { type: String, default: '' },

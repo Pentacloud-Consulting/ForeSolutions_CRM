@@ -33,7 +33,7 @@ export interface Lead {
   address: string;
   city: string;
   interestedIn: string;
-  budget: number | null;
+
   leadSource: LeadSource;
   status: LeadStatus;
   notes: string;

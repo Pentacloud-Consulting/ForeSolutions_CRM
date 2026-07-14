@@ -167,7 +167,7 @@ export default function ProjectDetailPage() {
               <div className="lookup-display">
                 <div className="lookup-row">
                   <div className="lookup-item"><span>Lead Name</span><span>{lead.leadName}</span></div>
-                  <div className="lookup-item"><span>Budget</span><span>{formatCurrency(lead.budget)}</span></div>
+
                 </div>
               </div>
             </div>
